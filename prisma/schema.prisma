@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Local cache of normalized Scryfall card data.
+/// One row per distinct card name (reprints collapse); the full raw
+/// payload is retained in `scryfallJson` as a no-migration escape hatch.
+model Card {
+  id             String @id @default(cuid())
+  scryfallId     String @unique
+  oracleId       String
+  name           String
+  /// Accent/punctuation-insensitive lookup key. The cache key.
+  normalizedName String @unique
+
+  manaCost      String?
+  /// Float: Un-set cards have half mana values.
+  cmc           Float
+  typeLine      String
+  colorIdentity String[]
+  colors        String[]
+  layout        String
+  keywords      String[]
+  oracleText    String   @db.Text
+  /// Denormalized out of legalities JSON: validation hot path.
+  commanderLegality String
+
+  scryfallJson Json
+  fetchedAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  deckCards DeckCard[]
+
+  @@index([oracleId])
+  @@index([name])
+}
+
+model Deck {
+  id      String  @id @default(cuid())
+  name    String?
+  /// Exact user input, so any deck can be fully recomputed later.
+  rawText String  @db.Text
+  /// Cached DeckProfile snapshot. A cache, never the source of truth.
+  profile Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cards DeckCard[]
+
+  @@index([createdAt])
+}
+
+model DeckCard {
+  id String @id @default(cuid())
+
+  deckId String
+  /// Null when the name could not be resolved against Scryfall.
+  cardId String?
+  /// Always what the user typed, even when resolved.
+  rawName     String
+  quantity    Int
+  section     String
+  isCommander Boolean @default(false)
+  lineNumber  Int
+
+  deck Deck  @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  card Card? @relation(fields: [cardId], references: [id])
+
+  @@index([deckId])
+  @@index([cardId])
+}
