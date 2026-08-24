@@ -1,0 +1,949 @@
+{
+  "Sol Ring": {
+    "name": "Sol Ring",
+    "typeLine": "Artifact",
+    "cmc": 1,
+    "manaCost": "{1}",
+    "keywords": [],
+    "oracleId": "6ad8011d-3471-4369-9d68-b264cc027487",
+    "oracleText": "{T}: Add {C}{C}."
+  },
+  "Arcane Signet": {
+    "name": "Arcane Signet",
+    "typeLine": "Artifact",
+    "cmc": 2,
+    "manaCost": "{2}",
+    "keywords": [],
+    "oracleId": "0bc7f093-bef0-4f1a-852c-4b75ebf54838",
+    "oracleText": "{T}: Add one mana of any color in your commander's color identity."
+  },
+  "Birds of Paradise": {
+    "name": "Birds of Paradise",
+    "typeLine": "Creature — Bird",
+    "cmc": 1,
+    "manaCost": "{G}",
+    "keywords": [
+      "Flying"
+    ],
+    "oracleId": "d3a0b660-358c-41bd-9cd2-41fbf3491b1a",
+    "oracleText": "Flying\n{T}: Add one mana of any color."
+  },
+  "Cultivate": {
+    "name": "Cultivate",
+    "typeLine": "Sorcery",
+    "cmc": 3,
+    "manaCost": "{2}{G}",
+    "keywords": [],
+    "oracleId": "8b755881-a72d-4e21-a369-d2924eb4585a",
+    "oracleText": "Search your library for up to two basic land cards, reveal those cards, put one onto the battlefield tapped and the other into your hand, then shuffle."
+  },
+  "Dark Ritual": {
+    "name": "Dark Ritual",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{B}",
+    "keywords": [],
+    "oracleId": "53f7c868-b03e-4fc2-8dcf-a75bbfa3272b",
+    "oracleText": "Add {B}{B}{B}."
+  },
+  "Dockside Extortionist": {
+    "name": "Dockside Extortionist",
+    "typeLine": "Creature — Goblin Pirate",
+    "cmc": 2,
+    "manaCost": "{1}{R}",
+    "keywords": [
+      "Treasure"
+    ],
+    "oracleId": "697bcfe1-ecbf-42a1-bfc7-0766d48ca56b",
+    "oracleText": "When this creature enters, create X Treasure tokens, where X is the number of artifacts and enchantments your opponents control. (Treasure tokens are artifacts with \"{T}, Sacrifice this token: Add one mana of any color.\")"
+  },
+  "Smothering Tithe": {
+    "name": "Smothering Tithe",
+    "typeLine": "Enchantment",
+    "cmc": 4,
+    "manaCost": "{3}{W}",
+    "keywords": [
+      "Treasure"
+    ],
+    "oracleId": "153376c9-dffd-458c-8ce3-a4c8269bc4e9",
+    "oracleText": "Whenever an opponent draws a card, that player may pay {2}. If the player doesn't, you create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")"
+  },
+  "Land Tax": {
+    "name": "Land Tax",
+    "typeLine": "Enchantment",
+    "cmc": 1,
+    "manaCost": "{W}",
+    "keywords": [],
+    "oracleId": "d2d9ecea-7925-420e-98b9-2f87f41f387c",
+    "oracleText": "At the beginning of your upkeep, if an opponent controls more lands than you, you may search your library for up to three basic land cards, reveal them, put them into your hand, then shuffle."
+  },
+  "Expedition Map": {
+    "name": "Expedition Map",
+    "typeLine": "Artifact",
+    "cmc": 1,
+    "manaCost": "{1}",
+    "keywords": [],
+    "oracleId": "8fcf50cd-e6d0-4516-850f-d42ee75dcc3a",
+    "oracleText": "{2}, {T}, Sacrifice this artifact: Search your library for a land card, reveal it, put it into your hand, then shuffle."
+  },
+  "Dryad Arbor": {
+    "name": "Dryad Arbor",
+    "typeLine": "Land Creature — Forest Dryad",
+    "cmc": 0,
+    "manaCost": null,
+    "keywords": [],
+    "oracleId": "e996cd67-739c-40f4-b276-0042acf26c71",
+    "oracleText": "(This land isn't a spell, it's affected by summoning sickness, and it has \"{T}: Add {G}.\")"
+  },
+  "Mystic Remora": {
+    "name": "Mystic Remora",
+    "typeLine": "Enchantment",
+    "cmc": 1,
+    "manaCost": "{U}",
+    "keywords": [
+      "Cumulative upkeep"
+    ],
+    "oracleId": "8a52f3c0-2552-4425-b2e3-5496eb2232a7",
+    "oracleText": "Cumulative upkeep {1} (At the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you pay its upkeep cost for each age counter on it.)\nWhenever an opponent casts a noncreature spell, you may draw a card unless that player pays {4}."
+  },
+  "Skullclamp": {
+    "name": "Skullclamp",
+    "typeLine": "Artifact — Equipment",
+    "cmc": 1,
+    "manaCost": "{1}",
+    "keywords": [
+      "Equip"
+    ],
+    "oracleId": "65986c1b-8e51-4604-b685-d82fa7d1263a",
+    "oracleText": "Equipped creature gets +1/-1.\nWhenever equipped creature dies, draw two cards.\nEquip {1}"
+  },
+  "Light Up the Stage": {
+    "name": "Light Up the Stage",
+    "typeLine": "Sorcery",
+    "cmc": 3,
+    "manaCost": "{2}{R}",
+    "keywords": [
+      "Spectacle"
+    ],
+    "oracleId": "8d286376-f386-43ab-a9bd-8478fb9e2497",
+    "oracleText": "Spectacle {R} (You may cast this spell for its spectacle cost rather than its mana cost if an opponent lost life this turn.)\nExile the top two cards of your library. Until the end of your next turn, you may play those cards."
+  },
+  "Brainstorm": {
+    "name": "Brainstorm",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{U}",
+    "keywords": [],
+    "oracleId": "36cd2364-d113-47d1-b2c4-b088d9eb88dd",
+    "oracleText": "Draw three cards, then put two cards from your hand on top of your library in any order."
+  },
+  "Divination": {
+    "name": "Divination",
+    "typeLine": "Sorcery",
+    "cmc": 3,
+    "manaCost": "{2}{U}",
+    "keywords": [],
+    "oracleId": "273b339c-964b-4a18-8eb5-ceb8abcdfd9e",
+    "oracleText": "Draw two cards."
+  },
+  "Faithless Looting": {
+    "name": "Faithless Looting",
+    "typeLine": "Sorcery",
+    "cmc": 1,
+    "manaCost": "{R}",
+    "keywords": [
+      "Flashback"
+    ],
+    "oracleId": "3d6fa57a-aa53-4b5c-b8af-a7612c823117",
+    "oracleText": "Draw two cards, then discard two cards.\nFlashback {2}{R} (You may cast this card from your graveyard for its flashback cost. Then exile it.)"
+  },
+  "Wheel of Fortune": {
+    "name": "Wheel of Fortune",
+    "typeLine": "Sorcery",
+    "cmc": 3,
+    "manaCost": "{2}{R}",
+    "keywords": [],
+    "oracleId": "a8abd966-de7b-46a3-8ac7-8747ab35653a",
+    "oracleText": "Each player discards their hand, then draws seven cards."
+  },
+  "Ponder": {
+    "name": "Ponder",
+    "typeLine": "Sorcery",
+    "cmc": 1,
+    "manaCost": "{U}",
+    "keywords": [],
+    "oracleId": "02090581-61aa-4348-ad57-451be8ee91c2",
+    "oracleText": "Look at the top three cards of your library, then put them back in any order. You may shuffle.\nDraw a card."
+  },
+  "Preordain": {
+    "name": "Preordain",
+    "typeLine": "Sorcery",
+    "cmc": 1,
+    "manaCost": "{U}",
+    "keywords": [
+      "Scry"
+    ],
+    "oracleId": "ac641490-ca14-48d7-8cc4-b69ce984befa",
+    "oracleText": "Scry 2, then draw a card. (To scry 2, look at the top two cards of your library, then put any number of them on the bottom and the rest on top in any order.)"
+  },
+  "Opt": {
+    "name": "Opt",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{U}",
+    "keywords": [
+      "Scry"
+    ],
+    "oracleId": "713332c1-5bd8-400f-bfff-c1ca0697a043",
+    "oracleText": "Scry 1. (Look at the top card of your library. You may put that card on the bottom.)\nDraw a card."
+  },
+  "Sensei's Divining Top": {
+    "name": "Sensei's Divining Top",
+    "typeLine": "Artifact",
+    "cmc": 1,
+    "manaCost": "{1}",
+    "keywords": [],
+    "oracleId": "13575cf9-65c1-4861-b21e-eb2155e07766",
+    "oracleText": "{1}: Look at the top three cards of your library, then put them back in any order.\n{T}: Draw a card, then put this artifact on top of its owner's library."
+  },
+  "Impulse": {
+    "name": "Impulse",
+    "typeLine": "Instant",
+    "cmc": 2,
+    "manaCost": "{1}{U}",
+    "keywords": [],
+    "oracleId": "f6bd2902-7f8b-419e-bbc7-bcab0c1b7e01",
+    "oracleText": "Look at the top four cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order."
+  },
+  "Demonic Tutor": {
+    "name": "Demonic Tutor",
+    "typeLine": "Sorcery",
+    "cmc": 2,
+    "manaCost": "{1}{B}",
+    "keywords": [],
+    "oracleId": "82004860-e589-4e38-8d61-8c0210e4ea39",
+    "oracleText": "Search your library for a card, put that card into your hand, then shuffle."
+  },
+  "Vampiric Tutor": {
+    "name": "Vampiric Tutor",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{B}",
+    "keywords": [],
+    "oracleId": "ededbdae-d9dc-4206-9335-d7158f2d7700",
+    "oracleText": "Search your library for a card, then shuffle and put that card on top. You lose 2 life."
+  },
+  "Worldly Tutor": {
+    "name": "Worldly Tutor",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{G}",
+    "keywords": [],
+    "oracleId": "e8863518-0bfa-49c3-8c6e-6c9116a81051",
+    "oracleText": "Search your library for a creature card, reveal it, then shuffle and put the card on top."
+  },
+  "Enlightened Tutor": {
+    "name": "Enlightened Tutor",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{W}",
+    "keywords": [],
+    "oracleId": "c5229c17-b7be-4b05-b683-f2277edc4849",
+    "oracleText": "Search your library for an artifact or enchantment card, reveal it, then shuffle and put that card on top."
+  },
+  "Green Sun's Zenith": {
+    "name": "Green Sun's Zenith",
+    "typeLine": "Sorcery",
+    "cmc": 1,
+    "manaCost": "{X}{G}",
+    "keywords": [],
+    "oracleId": "0d96b60b-a060-48ee-bb83-93f1c4a10669",
+    "oracleText": "Search your library for a green creature card with mana value X or less, put it onto the battlefield, then shuffle. Shuffle Green Sun's Zenith into its owner's library."
+  },
+  "Chord of Calling": {
+    "name": "Chord of Calling",
+    "typeLine": "Instant",
+    "cmc": 3,
+    "manaCost": "{X}{G}{G}{G}",
+    "keywords": [
+      "Convoke"
+    ],
+    "oracleId": "6789a170-f2c5-4fc0-8a45-2b2361e67410",
+    "oracleText": "Convoke (Your creatures can help cast this spell. Each creature you tap while casting this spell pays for {1} or one mana of that creature's color.)\nSearch your library for a creature card with mana value X or less, put it onto the battlefield, then shuffle."
+  },
+  "Gamble": {
+    "name": "Gamble",
+    "typeLine": "Sorcery",
+    "cmc": 1,
+    "manaCost": "{R}",
+    "keywords": [],
+    "oracleId": "a54f0869-94c8-42af-9080-166efb9486a4",
+    "oracleText": "Search your library for a card, put that card into your hand, discard a card at random, then shuffle."
+  },
+  "Diabolic Intent": {
+    "name": "Diabolic Intent",
+    "typeLine": "Sorcery",
+    "cmc": 2,
+    "manaCost": "{1}{B}",
+    "keywords": [],
+    "oracleId": "038519b9-bca8-4b27-b5ac-2409595469d0",
+    "oracleText": "As an additional cost to cast this spell, sacrifice a creature.\nSearch your library for a card, put that card into your hand, then shuffle."
+  },
+  "Birthing Pod": {
+    "name": "Birthing Pod",
+    "typeLine": "Artifact",
+    "cmc": 4,
+    "manaCost": "{3}{G/P}",
+    "keywords": [],
+    "oracleId": "f8b9dd54-0837-47f4-ad14-7a0322d46d5f",
+    "oracleText": "({G/P} can be paid with either {G} or 2 life.)\n{1}{G/P}, {T}, Sacrifice a creature: Search your library for a creature card with mana value equal to 1 plus the sacrificed creature's mana value, put that card onto the battlefield, then shuffle. Activate only as a sorcery."
+  },
+  "Solve the Equation": {
+    "name": "Solve the Equation",
+    "typeLine": "Sorcery",
+    "cmc": 3,
+    "manaCost": "{2}{U}",
+    "keywords": [],
+    "oracleId": "f02682f0-26c0-4032-9df3-273b6a45d0a8",
+    "oracleText": "Search your library for an instant or sorcery card, reveal it, put it into your hand, then shuffle."
+  },
+  "Swords to Plowshares": {
+    "name": "Swords to Plowshares",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{W}",
+    "keywords": [],
+    "oracleId": "b1544f21-7e98-461b-aed5-e748b0168c52",
+    "oracleText": "Exile target creature. Its controller gains life equal to its power."
+  },
+  "Beast Within": {
+    "name": "Beast Within",
+    "typeLine": "Instant",
+    "cmc": 3,
+    "manaCost": "{2}{G}",
+    "keywords": [],
+    "oracleId": "7735eeba-693b-47e2-bd51-414379cf1016",
+    "oracleText": "Destroy target permanent. Its controller creates a 3/3 green Beast creature token."
+  },
+  "Counterspell": {
+    "name": "Counterspell",
+    "typeLine": "Instant",
+    "cmc": 2,
+    "manaCost": "{U}{U}",
+    "keywords": [],
+    "oracleId": "cc187110-1148-4090-bbb8-e205694a39f5",
+    "oracleText": "Counter target spell."
+  },
+  "Swan Song": {
+    "name": "Swan Song",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{U}",
+    "keywords": [],
+    "oracleId": "8ddfc283-c9b4-41a5-af88-cf0068e986cc",
+    "oracleText": "Counter target enchantment, instant, or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying."
+  },
+  "Cyclonic Rift": {
+    "name": "Cyclonic Rift",
+    "typeLine": "Instant",
+    "cmc": 2,
+    "manaCost": "{1}{U}",
+    "keywords": [
+      "Overload"
+    ],
+    "oracleId": "d75b9c82-1b49-4c3e-a1b5-aeef57d6644b",
+    "oracleText": "Return target nonland permanent you don't control to its owner's hand.\nOverload {6}{U} (You may cast this spell for its overload cost. If you do, change \"target\" in its text to \"each.\")"
+  },
+  "Imprisoned in the Moon": {
+    "name": "Imprisoned in the Moon",
+    "typeLine": "Enchantment — Aura",
+    "cmc": 3,
+    "manaCost": "{2}{U}",
+    "keywords": [
+      "Enchant"
+    ],
+    "oracleId": "339a7418-9a29-4eae-a3c2-ea590d175936",
+    "oracleText": "Enchant creature, land, or planeswalker\nEnchanted permanent is a colorless land with \"{T}: Add {C}\" and loses all other card types and abilities."
+  },
+  "Darksteel Mutation": {
+    "name": "Darksteel Mutation",
+    "typeLine": "Enchantment — Aura",
+    "cmc": 2,
+    "manaCost": "{1}{W}",
+    "keywords": [
+      "Enchant"
+    ],
+    "oracleId": "05a4f8ff-49da-42af-add5-6248c4b0644b",
+    "oracleText": "Enchant creature\nEnchanted creature is an Insect artifact creature with base power and toughness 0/1 and has indestructible, and it loses all other abilities, card types, and creature types."
+  },
+  "Song of the Dryads": {
+    "name": "Song of the Dryads",
+    "typeLine": "Enchantment — Aura",
+    "cmc": 3,
+    "manaCost": "{2}{G}",
+    "keywords": [
+      "Enchant"
+    ],
+    "oracleId": "7c3944fa-7c86-4979-85a9-86196aa94594",
+    "oracleText": "Enchant permanent\nEnchanted permanent is a colorless Forest land."
+  },
+  "Unsummon": {
+    "name": "Unsummon",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{U}",
+    "keywords": [],
+    "oracleId": "837182db-1bf3-4a2c-bd01-1af9d9873561",
+    "oracleText": "Return target creature to its owner's hand."
+  },
+  "Stifle": {
+    "name": "Stifle",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{U}",
+    "keywords": [],
+    "oracleId": "b3b00911-ece7-4484-bc36-f211ce72b6cc",
+    "oracleText": "Counter target activated or triggered ability. (Mana abilities can't be targeted.)"
+  },
+  "Act of Treason": {
+    "name": "Act of Treason",
+    "typeLine": "Sorcery",
+    "cmc": 3,
+    "manaCost": "{2}{R}",
+    "keywords": [],
+    "oracleId": "9d08af23-9f4a-4097-9abc-3b17475ab744",
+    "oracleText": "Gain control of target creature until end of turn. Untap that creature. It gains haste until end of turn. (It can attack and {T} this turn.)"
+  },
+  "Thoughtseize": {
+    "name": "Thoughtseize",
+    "typeLine": "Sorcery",
+    "cmc": 1,
+    "manaCost": "{B}",
+    "keywords": [],
+    "oracleId": "edd8d1e8-be43-4c38-bb3a-83081fbaf0b5",
+    "oracleText": "Target player reveals their hand. You choose a nonland card from it. That player discards that card. You lose 2 life."
+  },
+  "Wrath of God": {
+    "name": "Wrath of God",
+    "typeLine": "Sorcery",
+    "cmc": 4,
+    "manaCost": "{2}{W}{W}",
+    "keywords": [],
+    "oracleId": "34515b16-c9a4-4f98-8c77-416a7a523407",
+    "oracleText": "Destroy all creatures. They can't be regenerated."
+  },
+  "Farewell": {
+    "name": "Farewell",
+    "typeLine": "Sorcery",
+    "cmc": 6,
+    "manaCost": "{4}{W}{W}",
+    "keywords": [],
+    "oracleId": "4eb813fd-2d5a-4b02-8193-662681ef4e7d",
+    "oracleText": "Choose one or more —\n• Exile all artifacts.\n• Exile all creatures.\n• Exile all enchantments.\n• Exile all graveyards."
+  },
+  "Vandalblast": {
+    "name": "Vandalblast",
+    "typeLine": "Sorcery",
+    "cmc": 1,
+    "manaCost": "{R}",
+    "keywords": [
+      "Overload"
+    ],
+    "oracleId": "3567c3c8-b3c7-45b7-935b-b1fdbc973720",
+    "oracleText": "Destroy target artifact you don't control.\nOverload {4}{R} (You may cast this spell for its overload cost. If you do, change \"target\" in its text to \"each.\")"
+  },
+  "Blasphemous Act": {
+    "name": "Blasphemous Act",
+    "typeLine": "Sorcery",
+    "cmc": 9,
+    "manaCost": "{8}{R}",
+    "keywords": [],
+    "oracleId": "7a2484a9-04fd-41a0-8224-610c1c07ed10",
+    "oracleText": "This spell costs {1} less to cast for each creature on the battlefield.\nBlasphemous Act deals 13 damage to each creature."
+  },
+  "Toxic Deluge": {
+    "name": "Toxic Deluge",
+    "typeLine": "Sorcery",
+    "cmc": 3,
+    "manaCost": "{2}{B}",
+    "keywords": [],
+    "oracleId": "afaef788-34d1-460b-b884-9d7ae6ddeb18",
+    "oracleText": "As an additional cost to cast this spell, pay X life.\nAll creatures get -X/-X until end of turn."
+  },
+  "Austere Command": {
+    "name": "Austere Command",
+    "typeLine": "Sorcery",
+    "cmc": 6,
+    "manaCost": "{4}{W}{W}",
+    "keywords": [],
+    "oracleId": "09cc8709-fe10-472a-b05c-e89f3523018d",
+    "oracleText": "Choose two —\n• Destroy all artifacts.\n• Destroy all enchantments.\n• Destroy all creatures with mana value 3 or less.\n• Destroy all creatures with mana value 4 or greater."
+  },
+  "Pyroclasm": {
+    "name": "Pyroclasm",
+    "typeLine": "Sorcery",
+    "cmc": 2,
+    "manaCost": "{1}{R}",
+    "keywords": [],
+    "oracleId": "e4bcd4ea-e7cd-4471-8f3b-18bb51d3d70c",
+    "oracleText": "Pyroclasm deals 2 damage to each creature."
+  },
+  "By Invitation Only": {
+    "name": "By Invitation Only",
+    "typeLine": "Sorcery",
+    "cmc": 5,
+    "manaCost": "{3}{W}{W}",
+    "keywords": [],
+    "oracleId": "d64e96bf-6815-462c-93b4-c9c22dc43eda",
+    "oracleText": "Choose a number between 0 and 13. Each player sacrifices that many creatures of their choice."
+  },
+  "Ezuri's Predation": {
+    "name": "Ezuri's Predation",
+    "typeLine": "Sorcery",
+    "cmc": 8,
+    "manaCost": "{5}{G}{G}{G}",
+    "keywords": [
+      "Fight"
+    ],
+    "oracleId": "d0dd425b-fdba-41b4-b9e6-f5161610bd7e",
+    "oracleText": "For each creature your opponents control, create a 4/4 green Phyrexian Beast creature token. Each of those tokens fights a different one of those creatures."
+  },
+  "Decimate": {
+    "name": "Decimate",
+    "typeLine": "Sorcery",
+    "cmc": 4,
+    "manaCost": "{2}{R}{G}",
+    "keywords": [],
+    "oracleId": "a4e5693f-12a0-451e-818d-d6efc7b4ed25",
+    "oracleText": "Destroy target artifact, target creature, target enchantment, and target land. (You can't cast this spell unless you have legal choices for all its targets.)"
+  },
+  "Hex": {
+    "name": "Hex",
+    "typeLine": "Sorcery",
+    "cmc": 6,
+    "manaCost": "{4}{B}{B}",
+    "keywords": [],
+    "oracleId": "89457fa8-b0e2-4277-b6a9-c6601c59b46d",
+    "oracleText": "Destroy six target creatures."
+  },
+  "Heroic Intervention": {
+    "name": "Heroic Intervention",
+    "typeLine": "Instant",
+    "cmc": 2,
+    "manaCost": "{1}{G}",
+    "keywords": [],
+    "oracleId": "24882fa2-3fe9-4c1b-aa3d-0e6488b9db27",
+    "oracleText": "Permanents you control gain hexproof and indestructible until end of turn."
+  },
+  "Teferi's Protection": {
+    "name": "Teferi's Protection",
+    "typeLine": "Instant",
+    "cmc": 3,
+    "manaCost": "{2}{W}",
+    "keywords": [],
+    "oracleId": "0d4ecdb1-ec90-497f-a7a4-1c68092b8757",
+    "oracleText": "Until your next turn, your life total can't change and you gain protection from everything. All permanents you control phase out. (While they're phased out, they're treated as though they don't exist. They phase in before you untap during your untap step.)\nExile Teferi's Protection."
+  },
+  "Lightning Greaves": {
+    "name": "Lightning Greaves",
+    "typeLine": "Artifact — Equipment",
+    "cmc": 2,
+    "manaCost": "{2}",
+    "keywords": [
+      "Equip"
+    ],
+    "oracleId": "ca204b66-8d0c-431a-8d34-282f7c2d17da",
+    "oracleText": "Equipped creature has haste and shroud. (It can't be the target of spells or abilities.)\nEquip {0}"
+  },
+  "Swiftfoot Boots": {
+    "name": "Swiftfoot Boots",
+    "typeLine": "Artifact — Equipment",
+    "cmc": 2,
+    "manaCost": "{2}",
+    "keywords": [
+      "Equip"
+    ],
+    "oracleId": "c8b143ad-43ec-4e0d-a440-e348daa31391",
+    "oracleText": "Equipped creature has hexproof and haste. (It can't be the target of spells or abilities your opponents control. It can attack and {T} no matter when it came under your control.)\nEquip {1} ({1}: Attach to target creature you control. Equip only as a sorcery.)"
+  },
+  "Tamiyo's Safekeeping": {
+    "name": "Tamiyo's Safekeeping",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{G}",
+    "keywords": [],
+    "oracleId": "bb2b324c-970a-4920-884e-c92ba49669f0",
+    "oracleText": "Target permanent you control gains hexproof and indestructible until end of turn. You gain 2 life. (A permanent with hexproof and indestructible can't be the target of spells or abilities your opponents control. Damage and effects that say \"destroy\" don't destroy it.)"
+  },
+  "Ephemerate": {
+    "name": "Ephemerate",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{W}",
+    "keywords": [
+      "Rebound"
+    ],
+    "oracleId": "0fd57894-b917-41c8-a394-360d1d31b236",
+    "oracleText": "Exile target creature you control, then return it to the battlefield under its owner's control.\nRebound (If you cast this spell from your hand, exile it as it resolves. At the beginning of your next upkeep, you may cast this card from exile without paying its mana cost.)"
+  },
+  "Cloudshift": {
+    "name": "Cloudshift",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{W}",
+    "keywords": [],
+    "oracleId": "6879f5ce-7a1b-4606-bad1-885779b0d456",
+    "oracleText": "Exile target creature you control, then return that card to the battlefield under your control."
+  },
+  "Feign Death": {
+    "name": "Feign Death",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{B}",
+    "keywords": [],
+    "oracleId": "f718e507-296b-4f22-842b-5fb91322069b",
+    "oracleText": "Until end of turn, target creature gains \"When this creature dies, return it to the battlefield tapped under its owner's control with a +1/+1 counter on it.\""
+  },
+  "Selfless Spirit": {
+    "name": "Selfless Spirit",
+    "typeLine": "Creature — Spirit Cleric",
+    "cmc": 2,
+    "manaCost": "{1}{W}",
+    "keywords": [
+      "Flying"
+    ],
+    "oracleId": "71d785a9-ddc8-472e-a778-a551b444a4bd",
+    "oracleText": "Flying\nSacrifice this creature: Creatures you control gain indestructible until end of turn."
+  },
+  "Mother of Runes": {
+    "name": "Mother of Runes",
+    "typeLine": "Creature — Human Cleric",
+    "cmc": 1,
+    "manaCost": "{W}",
+    "keywords": [],
+    "oracleId": "60433b48-d27f-413c-905c-43839b1943f1",
+    "oracleText": "{T}: Target creature you control gains protection from the color of your choice until end of turn."
+  },
+  "Deflecting Swat": {
+    "name": "Deflecting Swat",
+    "typeLine": "Instant",
+    "cmc": 3,
+    "manaCost": "{2}{R}",
+    "keywords": [],
+    "oracleId": "ae120613-97d6-4393-b39d-c3e6c076f5d6",
+    "oracleText": "If you control a commander, you may cast this spell without paying its mana cost.\nYou may choose new targets for target spell or ability."
+  },
+  "Veil of Summer": {
+    "name": "Veil of Summer",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{G}",
+    "keywords": [],
+    "oracleId": "002965be-a36f-4a09-9ce0-c6535bca1703",
+    "oracleText": "Draw a card if an opponent has cast a blue or black spell this turn. Spells you control can't be countered this turn. You and permanents you control gain hexproof from blue and from black until end of turn. (You and they can't be the targets of blue or black spells or abilities your opponents control.)"
+  },
+  "Regrowth": {
+    "name": "Regrowth",
+    "typeLine": "Sorcery",
+    "cmc": 2,
+    "manaCost": "{1}{G}",
+    "keywords": [],
+    "oracleId": "e6e4a8bd-5c40-4654-8de1-0da9afed90fd",
+    "oracleText": "Return target card from your graveyard to your hand."
+  },
+  "Eternal Witness": {
+    "name": "Eternal Witness",
+    "typeLine": "Creature — Human Shaman",
+    "cmc": 3,
+    "manaCost": "{1}{G}{G}",
+    "keywords": [],
+    "oracleId": "30b24e8e-3b0e-4d8e-90f3-f66eb7c1858c",
+    "oracleText": "When this creature enters, you may return target card from your graveyard to your hand."
+  },
+  "Reanimate": {
+    "name": "Reanimate",
+    "typeLine": "Sorcery",
+    "cmc": 1,
+    "manaCost": "{B}",
+    "keywords": [],
+    "oracleId": "a044474a-cd72-4e9d-bd8d-a08f2de9cdc0",
+    "oracleText": "Put target creature card from a graveyard onto the battlefield under your control. You lose life equal to that card's mana value."
+  },
+  "Animate Dead": {
+    "name": "Animate Dead",
+    "typeLine": "Enchantment — Aura",
+    "cmc": 2,
+    "manaCost": "{1}{B}",
+    "keywords": [
+      "Enchant"
+    ],
+    "oracleId": "c0d8fef4-65f4-4769-982d-b397d2b7e977",
+    "oracleText": "Enchant creature card in a graveyard\nWhen this Aura enters, if it's on the battlefield, it loses \"enchant creature card in a graveyard\" and gains \"enchant creature put onto the battlefield with this Aura.\" Return enchanted creature card to the battlefield under your control and attach this Aura to it. When this Aura leaves the battlefield, that creature's controller sacrifices it.\nEnchanted creature gets -1/-0."
+  },
+  "Sun Titan": {
+    "name": "Sun Titan",
+    "typeLine": "Creature — Giant",
+    "cmc": 6,
+    "manaCost": "{4}{W}{W}",
+    "keywords": [
+      "Vigilance"
+    ],
+    "oracleId": "b2e950fb-cb7e-40a0-a311-5bbdd0477b29",
+    "oracleText": "Vigilance\nWhenever this creature enters or attacks, you may return target permanent card with mana value 3 or less from your graveyard to the battlefield."
+  },
+  "Sevinne's Reclamation": {
+    "name": "Sevinne's Reclamation",
+    "typeLine": "Sorcery",
+    "cmc": 3,
+    "manaCost": "{2}{W}",
+    "keywords": [
+      "Flashback"
+    ],
+    "oracleId": "1b9f9f5b-8712-4f00-90cb-1b7b9970eccc",
+    "oracleText": "Return target permanent card with mana value 3 or less from your graveyard to the battlefield. If this spell was cast from a graveyard, you may copy this spell and may choose a new target for the copy.\nFlashback {4}{W} (You may cast this card from your graveyard for its flashback cost. Then exile it.)"
+  },
+  "Snapcaster Mage": {
+    "name": "Snapcaster Mage",
+    "typeLine": "Creature — Human Wizard",
+    "cmc": 2,
+    "manaCost": "{1}{U}",
+    "keywords": [
+      "Flash"
+    ],
+    "oracleId": "2bb2eda7-3b38-4c56-870f-c3218a1056f5",
+    "oracleText": "Flash\nWhen this creature enters, target instant or sorcery card in your graveyard gains flashback until end of turn. The flashback cost is equal to its mana cost. (You may cast that card from your graveyard for its flashback cost. Then exile it.)"
+  },
+  "Past in Flames": {
+    "name": "Past in Flames",
+    "typeLine": "Sorcery",
+    "cmc": 4,
+    "manaCost": "{3}{R}",
+    "keywords": [
+      "Flashback"
+    ],
+    "oracleId": "37a18736-5fe2-4897-809b-013497bdd890",
+    "oracleText": "Each instant and sorcery card in your graveyard gains flashback until end of turn. The flashback cost is equal to its mana cost.\nFlashback {4}{R} (You may cast this card from your graveyard for its flashback cost. Then exile it.)"
+  },
+  "Underworld Breach": {
+    "name": "Underworld Breach",
+    "typeLine": "Enchantment",
+    "cmc": 2,
+    "manaCost": "{1}{R}",
+    "keywords": [],
+    "oracleId": "27e0948b-9916-473b-8d8c-a51bdfbc7457",
+    "oracleText": "Each nonland card in your graveyard has escape. The escape cost is equal to the card's mana cost plus exile three other cards from your graveyard. (You may cast cards from your graveyard for their escape cost.)\nAt the beginning of the end step, sacrifice this enchantment."
+  },
+  "Yawgmoth's Will": {
+    "name": "Yawgmoth's Will",
+    "typeLine": "Sorcery",
+    "cmc": 3,
+    "manaCost": "{2}{B}",
+    "keywords": [],
+    "oracleId": "322f0459-f394-44f0-977b-55fd0cbe0712",
+    "oracleText": "Until end of turn, you may play lands and cast spells from your graveyard.\nIf a card would be put into your graveyard from anywhere this turn, exile that card instead."
+  },
+  "Living Death": {
+    "name": "Living Death",
+    "typeLine": "Sorcery",
+    "cmc": 5,
+    "manaCost": "{3}{B}{B}",
+    "keywords": [],
+    "oracleId": "9e6a3df4-67a3-452e-a6ef-f04dbadb21ef",
+    "oracleText": "Each player exiles all creature cards from their graveyard, then sacrifices all creatures they control, then puts all cards they exiled this way onto the battlefield."
+  },
+  "Unearth": {
+    "name": "Unearth",
+    "typeLine": "Sorcery",
+    "cmc": 1,
+    "manaCost": "{B}",
+    "keywords": [
+      "Cycling"
+    ],
+    "oracleId": "4e0b647a-6e1a-421b-bca9-8d5e346bda80",
+    "oracleText": "Return target creature card with mana value 3 or less from your graveyard to the battlefield.\nCycling {2} ({2}, Discard this card: Draw a card.)"
+  },
+  "Bojuka Bog": {
+    "name": "Bojuka Bog",
+    "typeLine": "Land",
+    "cmc": 0,
+    "manaCost": null,
+    "keywords": [],
+    "oracleId": "04b7362d-0490-4cb0-b5d7-2a7732f659ce",
+    "oracleText": "This land enters tapped.\nWhen this land enters, exile target player's graveyard.\n{T}: Add {B}."
+  },
+  "Rest in Peace": {
+    "name": "Rest in Peace",
+    "typeLine": "Enchantment",
+    "cmc": 2,
+    "manaCost": "{1}{W}",
+    "keywords": [],
+    "oracleId": "087f9ad7-e74f-40e2-8102-1ed2925d0418",
+    "oracleText": "When this enchantment enters, exile all graveyards.\nIf a card or token would be put into a graveyard from anywhere, exile it instead."
+  },
+  "Soul-Guide Lantern": {
+    "name": "Soul-Guide Lantern",
+    "typeLine": "Artifact",
+    "cmc": 1,
+    "manaCost": "{1}",
+    "keywords": [],
+    "oracleId": "1b5e6560-ff2e-4475-96cb-63f64c8a86db",
+    "oracleText": "When this artifact enters, exile target card from a graveyard.\n{T}, Sacrifice this artifact: Exile each opponent's graveyard.\n{1}, {T}, Sacrifice this artifact: Draw a card."
+  },
+  "Scavenging Ooze": {
+    "name": "Scavenging Ooze",
+    "typeLine": "Creature — Ooze",
+    "cmc": 2,
+    "manaCost": "{1}{G}",
+    "keywords": [],
+    "oracleId": "1ff25f67-36a7-4cfa-a2b1-2135b5b6fb67",
+    "oracleText": "{G}: Exile target card from a graveyard. If it was a creature card, put a +1/+1 counter on this creature and you gain 1 life."
+  },
+  "Deathrite Shaman": {
+    "name": "Deathrite Shaman",
+    "typeLine": "Creature — Elf Shaman",
+    "cmc": 1,
+    "manaCost": "{B/G}",
+    "keywords": [],
+    "oracleId": "22f1a4a4-c423-4d1c-8775-0ed604a9fa51",
+    "oracleText": "{T}: Exile target land card from a graveyard. Add one mana of any color. (Activate only as an instant.)\n{B}, {T}: Exile target instant or sorcery card from a graveyard. Each opponent loses 2 life.\n{G}, {T}: Exile target creature card from a graveyard. You gain 2 life."
+  },
+  "Nihil Spellbomb": {
+    "name": "Nihil Spellbomb",
+    "typeLine": "Artifact",
+    "cmc": 1,
+    "manaCost": "{1}",
+    "keywords": [],
+    "oracleId": "b713e49f-1b13-42d1-91f2-cc7a579e7614",
+    "oracleText": "{T}, Sacrifice this artifact: Exile target player's graveyard.\nWhen this artifact is put into a graveyard from the battlefield, you may pay {B}. If you do, draw a card."
+  },
+  "Grafdigger's Cage": {
+    "name": "Grafdigger's Cage",
+    "typeLine": "Artifact",
+    "cmc": 1,
+    "manaCost": "{1}",
+    "keywords": [],
+    "oracleId": "753cb2b2-24ce-484f-a2d0-be6fd2c67ebd",
+    "oracleText": "Creature cards in graveyards and libraries can't enter the battlefield.\nPlayers can't cast spells from graveyards or libraries."
+  },
+  "Dauthi Voidwalker": {
+    "name": "Dauthi Voidwalker",
+    "typeLine": "Creature — Dauthi Rogue",
+    "cmc": 2,
+    "manaCost": "{B}{B}",
+    "keywords": [
+      "Shadow"
+    ],
+    "oracleId": "f1c2dbe2-fbe0-4058-bdf1-91d1b1832786",
+    "oracleText": "Shadow (This creature can block or be blocked by only creatures with shadow.)\nIf a card would be put into an opponent's graveyard from anywhere, instead exile it with a void counter on it.\n{T}, Sacrifice this creature: Choose an exiled card an opponent owns with a void counter on it. You may play it this turn without paying its mana cost."
+  },
+  "Leyline of the Void": {
+    "name": "Leyline of the Void",
+    "typeLine": "Enchantment",
+    "cmc": 4,
+    "manaCost": "{2}{B}{B}",
+    "keywords": [],
+    "oracleId": "f4e32fc1-1b8d-441e-8e76-71f19f98e925",
+    "oracleText": "If this card is in your opening hand, you may begin the game with it on the battlefield.\nIf a card would be put into an opponent's graveyard from anywhere, exile it instead."
+  },
+  "Tormod's Crypt": {
+    "name": "Tormod's Crypt",
+    "typeLine": "Artifact",
+    "cmc": 0,
+    "manaCost": "{0}",
+    "keywords": [],
+    "oracleId": "1573f7f9-672c-421a-b1ac-3d0d8aea59ca",
+    "oracleText": "{T}, Sacrifice this artifact: Exile target player's graveyard."
+  },
+  "Surgical Extraction": {
+    "name": "Surgical Extraction",
+    "typeLine": "Instant",
+    "cmc": 1,
+    "manaCost": "{B/P}",
+    "keywords": [],
+    "oracleId": "3bfa088c-9a47-4123-aee5-4de44e355bef",
+    "oracleText": "({B/P} can be paid with either {B} or 2 life.)\nChoose target card in a graveyard other than a basic land card. Search its owner's graveyard, hand, and library for any number of cards with the same name as that card and exile them. Then that player shuffles."
+  },
+  "Containment Priest": {
+    "name": "Containment Priest",
+    "typeLine": "Creature — Human Cleric",
+    "cmc": 2,
+    "manaCost": "{1}{W}",
+    "keywords": [
+      "Flash"
+    ],
+    "oracleId": "8a76a9b9-3127-45fe-b20f-a8f643276281",
+    "oracleText": "Flash\nIf a nontoken creature would enter and it wasn't cast, exile it instead."
+  },
+  "Ground Seal": {
+    "name": "Ground Seal",
+    "typeLine": "Enchantment",
+    "cmc": 2,
+    "manaCost": "{1}{G}",
+    "keywords": [],
+    "oracleId": "13f6f960-ef79-4f2c-8874-90fe9e77099e",
+    "oracleText": "When this enchantment enters, draw a card.\nCards in graveyards can't be the targets of spells or abilities."
+  },
+  "Malakir Rebirth // Malakir Mire": {
+    "name": "Malakir Rebirth // Malakir Mire",
+    "typeLine": "Instant // Land",
+    "cmc": 1,
+    "manaCost": null,
+    "keywords": [],
+    "oracleId": "a731e87b-8d99-4b64-8ee3-8e540d652366",
+    "oracleText": "Choose target creature. You lose 2 life. Until end of turn, that creature gains \"When this creature dies, return it to the battlefield tapped under its owner's control.\"\n//\nThis land enters tapped.\n{T}: Add {B}."
+  },
+  "Kodama's Reach": {
+    "name": "Kodama's Reach",
+    "typeLine": "Sorcery — Arcane",
+    "cmc": 3,
+    "manaCost": "{2}{G}",
+    "keywords": [],
+    "oracleId": "1593ea18-2f2f-4ab4-83fb-6ccc0bec8a90",
+    "oracleText": "Search your library for up to two basic land cards, reveal those cards, put one onto the battlefield tapped and the other into your hand, then shuffle."
+  },
+  "Talisman of Progress": {
+    "name": "Talisman of Progress",
+    "typeLine": "Artifact",
+    "cmc": 2,
+    "manaCost": "{2}",
+    "keywords": [],
+    "oracleId": "00e35322-1a9a-41e3-9ce1-359c8eaa3bc7",
+    "oracleText": "{T}: Add {C}.\n{T}: Add {W} or {U}. This artifact deals 1 damage to you."
+  },
+  "Rhystic Study": {
+    "name": "Rhystic Study",
+    "typeLine": "Enchantment",
+    "cmc": 3,
+    "manaCost": "{2}{U}",
+    "keywords": [],
+    "oracleId": "53236dd7-845a-444c-96d5-f41ed7325d8f",
+    "oracleText": "Whenever an opponent casts a spell, you may draw a card unless that player pays {1}."
+  },
+  "Guardian Project": {
+    "name": "Guardian Project",
+    "typeLine": "Enchantment",
+    "cmc": 4,
+    "manaCost": "{3}{G}",
+    "keywords": [],
+    "oracleId": "4f9e07ae-6341-4b46-9f77-f17ab659d266",
+    "oracleText": "Whenever a nontoken creature you control enters, if it doesn't have the same name as another creature you control or a creature card in your graveyard, draw a card."
+  },
+  "Beast Whisperer": {
+    "name": "Beast Whisperer",
+    "typeLine": "Creature — Elf Druid",
+    "cmc": 4,
+    "manaCost": "{2}{G}{G}",
+    "keywords": [],
+    "oracleId": "5da7eea8-bb9e-47ce-a554-8a1ee058bd7a",
+    "oracleText": "Whenever you cast a creature spell, draw a card."
+  },
+  "Sylvan Library": {
+    "name": "Sylvan Library",
+    "typeLine": "Enchantment",
+    "cmc": 2,
+    "manaCost": "{1}{G}",
+    "keywords": [],
+    "oracleId": "92eed395-62ca-4293-882b-8565c40daab5",
+    "oracleText": "At the beginning of your draw step, you may draw two additional cards. If you do, choose two cards in your hand drawn this turn. For each of those cards, pay 4 life or put the card on top of your library."
+  }
+}

@@ -17,13 +17,23 @@ const atraxa = legendaryCreature('Atraxa, Praetors\' Voice', ['W', 'U', 'B', 'G'
   cmc: 4,
   manaCost: '{G}{W}{U}{B}',
 });
-const solRing = makeCard({ name: 'Sol Ring', typeLine: 'Artifact', cmc: 1, manaCost: '{1}' });
+// Real oracle text, so role classification exercises genuine wording.
+const solRing = makeCard({
+  name: 'Sol Ring',
+  typeLine: 'Artifact',
+  cmc: 1,
+  manaCost: '{1}',
+  oracleText: '{T}: Add {C}{C}.',
+});
 const cultivate = makeCard({
   name: 'Cultivate',
   typeLine: 'Sorcery',
   cmc: 3,
   manaCost: '{2}{G}',
   colorIdentity: ['G'],
+  oracleText:
+    'Search your library for up to two basic land cards, reveal those cards, ' +
+    'put one onto the battlefield tapped and the other into your hand, then shuffle.',
 });
 const forest = basicLand('Forest', 'G');
 
@@ -120,6 +130,23 @@ describe('buildDeckProfile', () => {
     // 13 cards, not 100.
     expect(profile.validation.valid).toBe(false);
     expect(profile.validation.issues.map((i) => i.code)).toContain('DECK_SIZE');
+  });
+
+  it('attaches role analysis to the profile', () => {
+    const parsed = parseDecklist(
+      ["1 Atraxa, Praetors' Voice", '1 Sol Ring', '1 Cultivate', '10 Forest'].join('\n'),
+    );
+    const profile = buildDeckProfile({
+      parsed,
+      resolved: index([atraxa, solRing, cultivate, forest]),
+      now,
+    });
+
+    // Sol Ring's mana ability and Cultivate's land search are both ramp.
+    expect(profile.roles?.counts.ramp).toBe(2);
+    expect(profile.roles?.cardsByRole.ramp).toEqual(['Sol Ring', 'Cultivate']);
+    // Every role key is always present, so consumers need no existence checks.
+    expect(Object.keys(profile.roles?.counts ?? {})).toHaveLength(9);
   });
 
   it('surfaces parse errors on the profile', () => {

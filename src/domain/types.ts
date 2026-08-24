@@ -20,6 +20,64 @@ export type CardType =
   | 'Other';
 
 /**
+ * Deterministic functional roles a card can fill. A card may fill zero or more.
+ *
+ * Deliberately NOT a taxonomy of everything a card can do: theft effects
+ * (Act of Treason) and hand disruption (Thoughtseize) have no role here, so a
+ * discard-heavy or threaten-heavy deck will show low interaction counts. That
+ * gap is known and accepted for this phase.
+ */
+export type CardRole =
+  | 'ramp'
+  | 'card_advantage'
+  | 'card_selection'
+  | 'tutor'
+  | 'interaction'
+  | 'board_wipe'
+  | 'protection'
+  | 'recursion'
+  | 'graveyard_hate';
+
+export const CARD_ROLES: readonly CardRole[] = [
+  'ramp',
+  'card_advantage',
+  'card_selection',
+  'tutor',
+  'interaction',
+  'board_wipe',
+  'protection',
+  'recursion',
+  'graveyard_hate',
+];
+
+/** One positive match, naming the deterministic rule that fired. */
+export interface CardRoleAssignment {
+  role: CardRole;
+  /** Stable kebab-case rule identifier, e.g. 'mana-ability', 'counter-spell'. */
+  ruleId: string;
+}
+
+/** Zero or more role assignments for a single card. */
+export interface CardRoleAnalysis {
+  /** The card's scryfallId. */
+  cardId: string;
+  assignments: CardRoleAssignment[];
+}
+
+/**
+ * Deck-level role aggregation.
+ *
+ * Roles are multi-valued, so `counts` totals are NOT expected to sum to the
+ * deck size.
+ */
+export interface DeckRoleProfile {
+  /** Quantity-weighted: 4 copies of a ramp card contribute 4. */
+  counts: Record<CardRole, number>;
+  /** Distinct card names, commanders first then mainboard order. */
+  cardsByRole: Record<CardRole, string[]>;
+}
+
+/**
  * The single internal card shape. Both cached rows and freshly fetched
  * Scryfall responses are mapped to this before any domain code sees them,
  * so cache-vs-network can never change analysis behaviour.
@@ -138,7 +196,6 @@ export interface DeckComposition {
  * The structured result of profiling a decklist.
  *
  * Later features attach as optional sibling keys, so nothing here changes:
- *   roles?: CardRoleAssignment[]
  *   strategy?: StrategyProfile
  *   analysis?: LlmAnalysis
  */
@@ -153,4 +210,6 @@ export interface DeckProfile {
   unresolved: UnresolvedEntry[];
   parseErrors: ParseError[];
   generatedAt: string;
+  /** Deterministic card-role classification. */
+  roles?: DeckRoleProfile;
 }
