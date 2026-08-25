@@ -58,6 +58,7 @@ describe('src/eval boundary', () => {
     'src/domain/speed.ts',
     'src/domain/consistency.ts',
     'src/domain/interaction.ts',
+    'src/domain/resilience.ts',
   ])(
     'keeps %s depending only on other domain modules',
     (file) => {

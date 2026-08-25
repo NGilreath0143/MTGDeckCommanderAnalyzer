@@ -176,3 +176,39 @@ Recommendation is to **split rather than rename**:
 
 These are genuinely different plans that share a zone; renaming would blur them.
 Not urgent, and deliberately not done during the vocabulary repair.
+
+## 14. Several archetypes have no recovery vocabulary
+
+**Found by:** Phase 4B.4 (Resilience)
+**Affects:** Phase 3A tag coverage
+
+`artifacts`, `tokens`, `go_wide`, `enchantress`, `aura_voltron`, `superfriends`,
+`voltron`, `counters` and `proliferate` have no tag expressing "restore a lost
+resource", so their Recovery component is 0 by construction rather than by
+measurement. Three of nine real decks score exactly 0.00.
+
+This is accepted, not a defect: those archetypes genuinely rebuild by generating
+fresh resources, which Weakest-Link Engine Redundancy already measures, and
+counting generation as recovery credited the same engine cards twice. A deck can
+still be resilient through Protection and Redundancy.
+
+If revisited, it needs tags for genuine restoration in those families (returning
+a destroyed Equipment, rebuilding a swept board from exile) rather than reusing
+generation tags.
+
+## 15. Commander backup cannot distinguish incidental from central
+
+**Found by:** Phase 4B.4 (Resilience)
+**Affects:** `commanderEngine.commanderPrimaryTags`
+
+`commander-engine-zero-backup` (Purphoros, a genuine engine) and
+`commander-not-relevant` (Bruenor, one incidental `voltron` tag) both score 0.00
+with status `applicable`. Existing evidence cannot separate them.
+
+Related to item 2 (`commanderAccess` in Consistency). Backup also counts
+tag-level alternatives rather than true functional substitutability: a card
+sharing a tag may not actually replace what the commander does.
+
+Removing the command-zone floor limited the consequence — the ambiguity now
+costs 0 points rather than inflating both cases by 6 — but the distinction
+remains underivable.
