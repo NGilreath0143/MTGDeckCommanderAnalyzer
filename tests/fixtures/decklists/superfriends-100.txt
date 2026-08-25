@@ -1,0 +1,99 @@
+Commander:
+1 Atraxa, Praetors' Voice
+Deck
+1 The Chain Veil
+1 Doubling Season
+1 Deepglow Skate
+1 Evolution Sage
+1 Flux Channeler
+1 Inexorable Tide
+1 Contagion Engine
+1 Contagion Clasp
+1 Thrummingbird
+1 Spark Double
+1 Teferi, Hero of Dominaria
+1 Jace, the Mind Sculptor
+1 Elspeth, Sun's Champion
+1 Vraska, Golgari Queen
+1 Garruk Wildspeaker
+1 Nissa, Who Shakes the World
+1 Narset Transcendent
+1 Tamiyo, Field Researcher
+1 Ajani Steadfast
+1 Kaya the Inexorable
+1 Sorin Markov
+1 Liliana Vess
+1 Karn Liberated
+1 Ugin, the Spirit Dragon
+1 Nicol Bolas, Planeswalker
+1 Sarkhan Unbroken
+1 Dovin Baan
+1 Vivien Reid
+1 Kasmina, Enigma Sage
+1 Estrid, the Masked
+1 Sol Ring
+1 Arcane Signet
+1 Chromatic Lantern
+1 Fellwar Stone
+1 Talisman of Progress
+1 Talisman of Unity
+1 Talisman of Curiosity
+1 Cultivate
+1 Kodama's Reach
+1 Farseek
+1 Nature's Lore
+1 Three Visits
+1 Rampant Growth
+1 Birds of Paradise
+1 Llanowar Elves
+1 Swords to Plowshares
+1 Path to Exile
+1 Beast Within
+1 Anguished Unmaking
+1 Vindicate
+1 Assassin's Trophy
+1 Counterspell
+1 Swan Song
+1 Cyclonic Rift
+1 Toxic Deluge
+1 Austere Command
+1 Heroic Intervention
+1 Teferi's Protection
+1 Rhystic Study
+1 Mystic Remora
+1 Command Tower
+1 Exotic Orchard
+1 Reflecting Pool
+1 Path of Ancestry
+1 Yavimaya, Cradle of Growth
+1 Morphic Pool
+1 Deserted Beach
+1 Sea of Clouds
+1 Windswept Heath
+1 Flooded Strand
+1 Polluted Delta
+1 Verdant Catacombs
+1 Misty Rainforest
+1 Temple Garden
+1 Hallowed Fountain
+1 Watery Grave
+1 Godless Shrine
+1 Overgrown Tomb
+1 Breeding Pool
+1 Yavimaya Coast
+1 Llanowar Wastes
+1 Underground River
+1 Adarkar Wastes
+1 Brushland
+1 Caves of Koilos
+1 Sunpetal Grove
+1 Hinterland Harbor
+1 Woodland Cemetery
+1 Glacial Fortress
+1 Drowned Catacomb
+1 Isolated Chapel
+1 Bountiful Promenade
+2 Forest
+2 Plains
+2 Island
+1 Swamp

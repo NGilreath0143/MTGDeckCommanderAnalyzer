@@ -1,0 +1,92 @@
+Commander:
+1 Purphoros, God of the Forge
+Deck
+1 Bitterblossom
+1 Impact Tremors
+1 Intangible Virtue
+1 Parallel Lives
+1 Anointed Procession
+1 Doubling Season
+1 Young Pyromancer
+1 Myr Battlesphere
+1 Hangarback Walker
+1 Scute Swarm
+1 Avenger of Zendikar
+1 Sai, Master Thopterist
+1 Storm-Kiln Artist
+1 Skullclamp
+1 Ashnod's Altar
+1 Viscera Seer
+1 Blood Artist
+1 Zulaport Cutthroat
+1 Mayhem Devil
+1 Grave Pact
+1 Reassembling Skeleton
+1 Craterhoof Behemoth
+1 Cathars' Crusade
+1 Sol Ring
+1 Arcane Signet
+1 Chromatic Lantern
+1 Fellwar Stone
+1 Cultivate
+1 Kodama's Reach
+1 Farseek
+1 Rampant Growth
+1 Birds of Paradise
+1 Llanowar Elves
+1 Swords to Plowshares
+1 Path to Exile
+1 Beast Within
+1 Assassin's Trophy
+1 Putrefy
+1 Toxic Deluge
+1 Austere Command
+1 Merciless Eviction
+1 Heroic Intervention
+1 Swiftfoot Boots
+1 Lightning Greaves
+1 Rhystic Study
+1 Mystic Remora
+1 Phyrexian Arena
+1 Night's Whisper
+1 Read the Bones
+1 Demonic Tutor
+1 Vampiric Tutor
+1 Eladamri's Call
+1 Entomb
+1 Reanimate
+1 Command Tower
+1 Exotic Orchard
+1 Reflecting Pool
+1 Path of Ancestry
+1 Morphic Pool
+1 Bountiful Promenade
+1 Windswept Heath
+1 Verdant Catacombs
+1 Misty Rainforest
+1 Temple Garden
+1 Overgrown Tomb
+1 Breeding Pool
+1 Woodland Cemetery
+1 Sunpetal Grove
+1 Brushland
+1 Llanowar Wastes
+1 Caves of Koilos
+1 Yavimaya Coast
+1 Godless Shrine
+1 Watery Grave
+1 Drowned Catacomb
+1 Isolated Chapel
+1 Hinterland Harbor
+1 Glacial Fortress
+1 Adarkar Wastes
+1 Underground River
+1 Yavimaya, Cradle of Growth
+1 Deserted Beach
+1 Sea of Clouds
+1 Flooded Strand
+1 Polluted Delta
+1 Hallowed Fountain
+5 Forest
+4 Mountain
+4 Swamp

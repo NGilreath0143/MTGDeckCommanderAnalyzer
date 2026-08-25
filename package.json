@@ -13,7 +13,15 @@
     "db:up": "docker compose up -d",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "eval:golden": "tsx scripts/eval-golden.ts",
+    "eval:corpus": "tsx scripts/eval-corpus.ts",
+    "eval:decks": "tsx scripts/eval-decks.ts",
+    "eval:tags": "tsx scripts/eval-tags.ts",
+    "eval:strategy": "tsx scripts/eval-strategy.ts",
+    "eval:archetypes": "tsx scripts/eval-archetypes.ts",
+    "eval:power": "tsx scripts/eval-power.ts",
+    "eval:speed": "tsx scripts/eval-speed.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",

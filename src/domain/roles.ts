@@ -1,3 +1,4 @@
+import { buildCardText, type CardText } from './cardText';
 import { isLand } from './cardFacts';
 import {
   CARD_ROLES,
@@ -30,76 +31,6 @@ import {
  * (Malakir Rebirth // Malakir Mire) contributes nothing to ramp. Correct for a
  * "what did I cast" reading; it would undercount for mana-base math.
  */
-
-// ---------------------------------------------------------------------------
-// Text normalization
-// ---------------------------------------------------------------------------
-
-/**
- * Drop parenthetical reminder text.
- *
- * Load-bearing: Dryad Arbor's ONLY mana ability is parenthetical, and Opt's
- * scry reminder repeats "look at the top card".
- */
-function stripReminder(text: string): string {
-  return text.replace(/\([^()]*\)/g, ' ');
-}
-
-/**
- * Blank out quoted spans, which is how Oracle text expresses a GRANTED ability.
- *
- * This single step resolves three separate traps: Malakir Rebirth and Feign
- * Death hide "return it to the battlefield" inside a granted death trigger, and
- * Imprisoned in the Moon hides "{T}: Add {C}" inside a quote.
- */
-function dequote(text: string): string {
-  return text.replace(/"[^"]*"/g, '   ');
-}
-
-/**
- * The front face of an oracle text blob.
- *
- * Deliberately NOT cardFacts.frontFace(): that splits a TYPE LINE on a bare
- * '//', while the mapper joins oracle faces with the literal '\n//\n'.
- */
-function frontOracle(text: string): string {
-  return text.split('\n//\n')[0] ?? '';
-}
-
-/** Split into sentence / line / modal-bullet units. */
-function clauses(text: string): string[] {
-  return text
-    .split(/(?<=[.!])\s+|\n|•/)
-    .map((c) => c.trim())
-    .filter(Boolean);
-}
-
-/** The text views a rule may read, computed once per card. */
-interface CardText {
-  /** Front face, reminder-stripped and dequoted. The default. */
-  front: string;
-  /** All faces, reminder-stripped and dequoted. */
-  all: string;
-  /** Front face, reminder-stripped but quotes INTACT. */
-  frontQuoted: string;
-  /** Clauses of `front`. */
-  frontClauses: string[];
-  /** Lines of `front` (before clause splitting). */
-  frontLines: string[];
-}
-
-function buildCardText(card: ResolvedCard): CardText {
-  const reminderless = stripReminder(card.oracleText);
-  const frontRaw = frontOracle(reminderless);
-  const front = dequote(frontRaw);
-  return {
-    front,
-    all: dequote(reminderless),
-    frontQuoted: frontRaw,
-    frontClauses: clauses(front),
-    frontLines: front.split('\n').map((l) => l.trim()).filter(Boolean),
-  };
-}
 
 // ---------------------------------------------------------------------------
 // Shared patterns
@@ -157,21 +88,49 @@ const WORD_NUMBERS: Record<string, number> = {
   six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
 };
 
-/** The largest number of cards a single clause draws. X counts as 2. */
-function maxDraw(text: string): number {
+/** A draw event, optionally naming who draws. */
+const DRAW_EVENT =
+  /\b(?:(you|each player|each opponent|an opponent|another player|that player|target player|they)\s+)?(?:may\s+)?draws?\s+(a|an|one|two|three|four|five|six|seven|eight|nine|ten|X|\d+)\s+(?:additional\s+)?cards?\b/gi;
+
+/** A clause that opens by naming a player other than you as its subject. */
+const OPENS_WITH_OTHER_PLAYER =
+  /^\s*(?:(?:each|every)\s+(?:player|opponent)|an?\s+opponent|another\s+player|that\s+player|target\s+player)\b/i;
+
+/**
+ * The largest number of cards YOU draw in a clause. X counts as 2.
+ *
+ * Attribution is by subject, not by proximity, which is what separates
+ * "Whenever an opponent draws a card, you may draw two cards"
+ * (Consecrated Sphinx: yours) from
+ * "Each player shuffles ..., then draws seven cards"
+ * (Timetwister: symmetric, not ours). A trailing "unless that player pays"
+ * must also not disown your draw, as on Esper Sentinel.
+ */
+function yourMaxDraw(clause: string): number {
   let max = 0;
-  const re = /\bdraws?\s+(a|an|one|two|three|four|five|six|seven|eight|nine|ten|X|\d+)\s+(?:additional\s+)?cards?\b/gi;
-  for (const m of text.matchAll(re)) {
-    const token = (m[1] ?? '').toLowerCase();
+  for (const m of clause.matchAll(DRAW_EVENT)) {
+    const subject = (m[1] ?? '').toLowerCase();
+    const token = (m[2] ?? '').toLowerCase();
     const n = token === 'x' ? 2 : (WORD_NUMBERS[token] ?? Number.parseInt(token, 10));
-    if (Number.isFinite(n)) max = Math.max(max, n);
+    if (!Number.isFinite(n)) continue;
+
+    // An explicitly named non-you drawer never counts.
+    if (subject && subject !== 'you') continue;
+
+    if (!subject) {
+      // A bare "draw" inherits the clause's leading subject: if the clause
+      // opens with another player and never names you before the draw, the
+      // draw is theirs.
+      const before = clause.slice(0, m.index ?? 0);
+      const afterFirstComma = before.replace(/^[^,]*,/, '');
+      if (OPENS_WITH_OTHER_PLAYER.test(clause) && !/\byou\b/i.test(afterFirstComma)) {
+        continue;
+      }
+    }
+    max = Math.max(max, n);
   }
   return max;
 }
-
-/** Draw granted to someone else, which is not our card advantage. */
-const OTHERS_DRAW =
-  /\b(?:an?\s+opponent|each\s+opponent|another\s+player|that\s+player|each\s+player)\s+draws?\b/i;
 
 // ---------------------------------------------------------------------------
 // Oracle-id exceptions
@@ -282,6 +241,21 @@ const ROLE_RULES: RoleRule[] = [
       ),
   },
   {
+    /*
+     * Triggered mana production, e.g. Carpet of Flowers: "At the beginning of
+     * each of your main phases ... you may add X mana of any one color."
+     * The mana-ability rule requires a "cost:" activation line, so a purely
+     * triggered mana source needs its own narrow rule.
+     */
+    id: 'mana-trigger',
+    role: 'ramp',
+    matches: (card, text) =>
+      !isLand(card) &&
+      /\b(?:whenever|at the beginning of)\b[^.]*\b(?:you may )?add\b[^.]*\b(?:mana|\{[WUBRGC])/i.test(
+        text.front,
+      ),
+  },
+  {
     id: 'treasure-generation',
     role: 'ramp',
     matches: (_card, text) =>
@@ -312,25 +286,24 @@ const ROLE_RULES: RoleRule[] = [
 
   // --- card_advantage -----------------------------------------------------
   {
-    // Plural draw with no offsetting discard. Excludes Ponder/Opt/Preordain
-    // (single "Draw a card") and Faithless Looting (draw two, discard two).
+    // Plural draw for YOU with no offsetting discard. Excludes the cantrips
+    // (single "Draw a card"), Faithless Looting (draw two, discard two) and
+    // symmetric mass draw (Wheel of Fortune, Timetwister, Windfall).
     id: 'multi-draw',
     role: 'card_advantage',
     matches: (_card, text) =>
-      maxDraw(text.front) >= 2 &&
-      !/\bdiscards?\b/i.test(text.front) &&
-      !OTHERS_DRAW.test(text.front),
+      text.frontClauses.some(
+        (c) => yourMaxDraw(c) >= 2 && !/\bdiscards?\b/i.test(c),
+      ),
   },
   {
-    // Repeatable draw engines: Rhystic Study, Beast Whisperer, Skullclamp.
+    // Repeatable draw engines: Rhystic Study, Beast Whisperer, Skullclamp,
+    // and opponent-triggered engines that draw for you (Consecrated Sphinx).
     id: 'repeatable-draw',
     role: 'card_advantage',
     matches: (_card, text) =>
       REPEATABLE.test(text.front) &&
-      maxDraw(text.front) >= 1 &&
-      text.frontClauses.some(
-        (c) => maxDraw(c) >= 1 && !OTHERS_DRAW.test(c),
-      ),
+      text.frontClauses.some((c) => yourMaxDraw(c) >= 1),
   },
   {
     id: 'impulse-draw',
@@ -354,10 +327,10 @@ const ROLE_RULES: RoleRule[] = [
       if (isLand(card)) return false;
       if (searchesForLand(text.front) || searchesForNonLand(text.front)) return false;
       const selection =
-        /\bscry\s+\d+\b|\bsurveil\s+\d+\b|\blook at the top\b|\bput\s+\w+\s+cards?\s+from your hand on top of your library\b/i;
+        /\bscry\s+\d+\b|\bsurveil\s+\d+\b|\blook at the top\b|\breveal the top \w+ cards? of your library\b|\bput\s+\w+\s+cards?\s+from your hand on top of your library\b/i;
       if (selection.test(text.front)) return true;
-      // Draw-then-discard looting (Faithless Looting).
-      return maxDraw(text.front) >= 1 && /\bdiscards?\b/i.test(text.front);
+      // Draw-then-discard looting (Faithless Looting, Careful Study).
+      return yourMaxDraw(text.front) >= 1 && /\bdiscards?\b/i.test(text.front);
     },
   },
 
@@ -393,11 +366,28 @@ const ROLE_RULES: RoleRule[] = [
 
   // --- board_wipe ---------------------------------------------------------
   {
-    // Overload turns "target" into "each". Per the agreed decision, Overload
-    // implies board_wipe while the base targeted mode still earns interaction.
-    id: 'overload',
+    /*
+     * Overload turns "target" into "each", but that only produces a wipe when
+     * the underlying effect hits opposing or neutral battlefield resources.
+     * Roughly half of all Overload cards buff your OWN board (Mizzium Skin,
+     * Weapon Surge, Scale Up, Dynacharge), and overloading those sweeps
+     * nothing. The base mode's target clause is the discriminator.
+     */
+    id: 'overload-mass-effect',
     role: 'board_wipe',
-    matches: (card) => card.keywords.some((k) => /^overload$/i.test(k)),
+    matches: (card, text) => {
+      if (!card.keywords.some((k) => /^overload$/i.test(k))) return false;
+      // The base mode is everything before the Overload keyword line.
+      const base = text.front.split(/\n?\s*Overload\b/i)[0] ?? text.front;
+      if (/\bdon't\s+control\b/i.test(base)) return true; // explicitly hostile
+      // "target ... you control" is a self-buff, not a sweep.
+      if (/\btarget\s+[^.]{0,40}?\byou\s+control\b/i.test(base)) return false;
+      if (/\bcreatures you control\b|\bpermanents you control\b/i.test(base)) return false;
+      // Otherwise require a hostile effect verb on an unrestricted target.
+      return /\b(?:destroy|exile|counter|tap|sacrifices?|discards?)\b|\bdeals?\s+\S+\s+damage\b|\bgets? -\d+/i.test(
+        base,
+      );
+    },
   },
   {
     // Mass destruction/exile. Requires the literal word "all" near the verb and
@@ -409,8 +399,13 @@ const ROLE_RULES: RoleRule[] = [
     matches: (_card, text) =>
       text.frontClauses.some(
         (c) =>
+          // The "target" guard is what keeps Decimate and Hex out: selecting
+          // several permanents is removal, not a sweep.
           !/\btarget\b/i.test(c) &&
-          /\b(?:destroy|exile|sacrifices?)\b[^.\n•]{0,40}?\ball\s+(?:other\s+)?(?:artifacts?|creatures?|enchantments?|lands?|permanents?|planeswalkers?|nonland permanents?)\b/i.test(
+          // "all" OR "each", with room for modifiers between the quantifier
+          // and the noun ("all multicolored permanents", "each nonland
+          // permanent with mana value 2 or less").
+          /\b(?:destroy|exile|sacrifices?)\b[^.\n•]{0,40}?\b(?:all|each)\s+(?:[a-z-]+\s+){0,3}?(?:artifacts?|creatures?|enchantments?|lands?|permanents?|planeswalkers?|tokens?)\b/i.test(
             c,
           ),
       ),
@@ -419,7 +414,12 @@ const ROLE_RULES: RoleRule[] = [
     id: 'mass-damage',
     role: 'board_wipe',
     matches: (_card, text) =>
-      /\bdeals\s+\d+\s+damage\s+to\s+each\s+(?:creature|other creature)\b/i.test(text.front),
+      // Covers a fixed amount ("deals 13 damage to each creature") and a
+      // derived amount where "damage" precedes the quantity
+      // ("deals damage equal to its power to each other creature").
+      /\bdeals\s+(?:\d+\s+|X\s+)?damage\s+(?:equal to [^.]{0,50}?\s+)?to\s+each\s+(?:other\s+)?creature\b/i.test(
+        text.front,
+      ),
   },
   {
     id: 'mass-shrink',
@@ -503,7 +503,12 @@ const ROLE_RULES: RoleRule[] = [
     matches: (_card, text) => {
       if (isDeathTriggerSave(text)) return false;
       return (
-        /\breturn\s+(?:target|enchanted|all)\b[^.]*\b(?:from|in)\s+(?:your|a|their)\s+graveyard\b/i.test(
+        // Allows a variable or bounded quantity before "target":
+        // "Return X target cards ...", "Return up to two target cards ...".
+        /\breturn\s+(?:X\s+|up to \w+\s+|all\s+|enchanted\s+)?target\b[^.]*\b(?:from|in)\s+(?:your|a|their)\s+graveyard\b/i.test(
+          text.all,
+        ) ||
+        /\breturn\s+(?:enchanted|all)\b[^.]*\b(?:from|in)\s+(?:your|a|their)\s+graveyard\b/i.test(
           text.all,
         ) ||
         /\breturn\s+(?:target|enchanted)\b[^.]*\bcard\b[^.]*\bto the battlefield\b/i.test(
@@ -517,7 +522,11 @@ const ROLE_RULES: RoleRule[] = [
         ) ||
         /\b(?:cast|play)\b[^.]*\bfrom your graveyard\b/i.test(text.all) ||
         /\bin your graveyard\s+(?:has|have)\s+escape\b/i.test(text.all) ||
-        /\bexiles? all creature cards from their graveyard\b/i.test(text.all)
+        /\bexiles? all creature cards from their graveyard\b/i.test(text.all) ||
+        // Mass battlefield return: Second Sunrise, Faith's Reward.
+        /\breturns?\s+to the battlefield\s+all\b[^.]*\bgraveyard\b/i.test(text.all) ||
+        // Graveyard card back to the top of a library: Noxious Revival.
+        /\bput\s+target\s+card\s+from\s+a\s+graveyard\s+on top of\b/i.test(text.all)
       );
     },
   },
@@ -549,7 +558,11 @@ const ROLE_RULES: RoleRule[] = [
         if (/\bexiled this way\b/i.test(text.front)) return false;
         return (
           /\bexile\s+(?:target player's|all|each opponent's)\s+graveyards?\b/i.test(c) ||
-          /\bexile\s+target\s+[^.]*\bcard\s+(?:from|in)\s+a\s+graveyard\b/i.test(c)
+          // Allows a bounded quantity and a qualified graveyard:
+          // "Exile up to two target cards from a single graveyard".
+          /\bexile\s+(?:up to \w+\s+)?target\s+[^.]*?cards?\b[^.]*\b(?:from|in)\s+(?:a|an|target|each|single|any)?\s*\w*\s*graveyard/i.test(
+            c,
+          )
         );
       }),
   },
@@ -563,6 +576,24 @@ const ROLE_RULES: RoleRule[] = [
       text.frontClauses.some(
         (c) =>
           /\bwould be put into\b[^.]*\bgraveyard\b[^.]*\bexile\b/i.test(c) &&
+          !/\byour graveyard\b/i.test(c),
+      ),
+  },
+  {
+    /*
+     * Triggered disruption, which achieves the same end as a replacement
+     * effect by a different template: Planar Void reads "Whenever another card
+     * is put into a graveyard from anywhere, exile that card."
+     *
+     * Restricted to triggers that exile, and excluded when the graveyard named
+     * is only your own (that is an engine cost, per Yawgmoth's Will).
+     */
+    id: 'graveyard-trigger',
+    role: 'graveyard_hate',
+    matches: (_card, text) =>
+      text.frontClauses.some(
+        (c) =>
+          /\bwhenever\b[^.]*\bput into a graveyard\b[^.]*\bexile\b/i.test(c) &&
           !/\byour graveyard\b/i.test(c),
       ),
   },

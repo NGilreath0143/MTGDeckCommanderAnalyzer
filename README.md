@@ -91,6 +91,40 @@ These were verified against the live Scryfall API, and each drives code:
 - **Quantity parsing caps at three digits**, so `1996 World Champion` keeps its
   name instead of being read as 1996 copies.
 
+## Evaluating the role classifier
+
+`src/eval/` is developer-only tooling for measuring role-classification quality.
+It is never imported by `src/app/`, `src/pipeline/`, `src/infra/`, or
+`src/domain/` — a test in `tests/eval/boundaries.test.ts` enforces that.
+
+```bash
+npm run eval:golden    # 200 manually labeled cases; exits non-zero on a violation
+npm run eval:corpus    # classify the ~31.8k Commander-legal cards from bulk data
+npm run eval:decks     # per-card roles and rule IDs for the fixture decks
+```
+
+**Golden set** (`src/eval/goldenSet.ts`) uses *partial* assertions: `expect`
+roles must be present, `exclude` roles must be absent, and any other role is
+unspecified and never fails a case. That keeps cases stable as the
+(intentionally incomplete) taxonomy grows. Cases labeled `KNOWN GAP` document
+false negatives on purpose, so a known miss shows up as a recall gap rather than
+disappearing from the dataset.
+
+`eval:golden` is the only script that can fail. Corpus totals and
+suspicious-case signals are **informational**: a land classified as ramp is not
+inherently wrong (`Treasure Vault` genuinely accelerates), so those outputs
+exist to put cases in front of a human.
+
+**The unclassified percentage is not a metric to reduce.** The nine roles are
+deliberately partial — theft and hand disruption have no role at all — so most
+cards correctly receive none.
+
+**Bulk data** is fetched once into `.cache/` (gitignored, ~25MB) from Scryfall's
+`oracle_cards` export. Cards are normalized through the existing
+`mapScryfallCard` → `mapCardRow` chain, so `mapCardRow` remains the only
+producer of `ResolvedCard` and the domain classifier never sees a raw Scryfall
+object.
+
 ## Extending
 
 Every planned feature is a new pure module plus an optional key on

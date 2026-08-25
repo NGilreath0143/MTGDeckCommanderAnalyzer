@@ -1,0 +1,98 @@
+Commander:
+1 Muldrotha, the Gravetide
+Deck
+1 Sol Ring
+1 Arcane Signet
+1 Cultivate
+1 Kodama's Reach
+1 Farseek
+1 Rampant Growth
+1 Birds of Paradise
+1 Llanowar Elves
+1 Mind Stone
+1 Fellwar Stone
+1 Regrowth
+1 Eternal Witness
+1 Timeless Witness
+1 Reanimate
+1 Animate Dead
+1 Necromancy
+1 Persist
+1 Bond of Revival
+1 Sun Titan
+1 Sevinne's Reclamation
+1 Unearth
+1 Snapcaster Mage
+1 Past in Flames
+1 Praetor's Counsel
+1 Living Death
+1 Underworld Breach
+1 Yawgmoth's Will
+1 Noxious Revival
+1 Wildest Dreams
+1 Bojuka Bog
+1 Scavenger Grounds
+1 Nihil Spellbomb
+1 Tormod's Crypt
+1 Relic of Progenitus
+1 Soul-Guide Lantern
+1 Agent of Erebos
+1 Angel of Finality
+1 Cling to Dust
+1 Swords to Plowshares
+1 Beast Within
+1 Generous Gift
+1 Assassin's Trophy
+1 Putrefy
+1 Counterspell
+1 Swan Song
+1 Cyclonic Rift
+1 Toxic Deluge
+1 Damnation
+1 Austere Command
+1 Merciless Eviction
+1 Heroic Intervention
+1 Teferi's Protection
+1 Lightning Greaves
+1 Swiftfoot Boots
+1 Ephemerate
+1 Rhystic Study
+1 Mystic Remora
+1 Phyrexian Arena
+1 Night's Whisper
+1 Read the Bones
+1 Brainstorm
+1 Ponder
+1 Preordain
+1 Impulse
+1 Demonic Tutor
+1 Vampiric Tutor
+1 Mystical Tutor
+1 Eladamri's Call
+1 Command Tower
+1 Exotic Orchard
+1 Reflecting Pool
+1 Morphic Pool
+1 Watery Grave
+1 Overgrown Tomb
+1 Breeding Pool
+1 Woodland Cemetery
+1 Drowned Catacomb
+1 Hinterland Harbor
+1 Verdant Catacombs
+1 Misty Rainforest
+1 Polluted Delta
+1 Llanowar Wastes
+1 Yavimaya Coast
+1 Underground River
+1 Temple Garden
+1 Godless Shrine
+1 Isolated Chapel
+1 Sunpetal Grove
+1 Glacial Fortress
+1 Brushland
+1 Caves of Koilos
+1 Adarkar Wastes
+3 Forest
+2 Island
+2 Swamp

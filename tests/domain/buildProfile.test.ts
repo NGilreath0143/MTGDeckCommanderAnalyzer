@@ -149,6 +149,23 @@ describe('buildDeckProfile', () => {
     expect(Object.keys(profile.roles?.counts ?? {})).toHaveLength(9);
   });
 
+  it('attaches strategy-tag analysis to the profile', () => {
+    const parsed = parseDecklist(
+      ["1 Atraxa, Praetors' Voice", '1 Sol Ring', '1 Cultivate', '10 Forest'].join('\n'),
+    );
+    const profile = buildDeckProfile({
+      parsed,
+      resolved: index([atraxa, solRing, cultivate, forest]),
+      now,
+    });
+
+    // Every tag key is always present, so consumers need no existence checks.
+    expect(Object.keys(profile.tags?.counts ?? {})).toHaveLength(39);
+    // None of these four cards participates in a tagged strategy.
+    const total = Object.values(profile.tags?.counts ?? {}).reduce((a, b) => a + b, 0);
+    expect(total).toBe(0);
+  });
+
   it('surfaces parse errors on the profile', () => {
     const profile = buildDeckProfile({
       parsed: parseDecklist(['1 Sol Ring', '@@@@'].join('\n')),

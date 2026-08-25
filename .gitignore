@@ -37,3 +37,9 @@ next-env.d.ts
 
 # prisma generated client (regenerate with `npm run db:generate`)
 /src/generated
+
+# scryfall bulk data cache (dev eval tooling; ~25MB)
+/.cache
+
+# phase specification documents (kept locally, not part of the codebase)
+phase-*-claude-instructions.md

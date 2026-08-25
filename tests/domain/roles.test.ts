@@ -332,11 +332,27 @@ describe('rule provenance', () => {
     expect(assignments).toEqual([{ role: 'ramp', ruleId: 'mana-ability' }]);
   });
 
-  it('reports overload as the reason a Vandalblast is a wipe', () => {
+  it('reports the overload mass-effect rule as the reason Vandalblast is a wipe', () => {
     const assignments = classifyCardRoles(realCard('Vandalblast')).assignments;
     expect(assignments).toEqual(
-      expect.arrayContaining([{ role: 'board_wipe', ruleId: 'overload' }]),
+      expect.arrayContaining([{ role: 'board_wipe', ruleId: 'overload-mass-effect' }]),
     );
+  });
+
+  it('does not treat a self-buff overload spell as a board wipe', () => {
+    // Mizzium Skin overloads into "each creature YOU control gains hexproof",
+    // which sweeps nothing.
+    const mizziumSkin = makeCard({
+      name: 'Mizzium Skin',
+      typeLine: 'Instant',
+      keywords: ['Overload'],
+      oracleText:
+        'Target creature you control gets +0/+1 and gains hexproof until end of turn.\n' +
+        'Overload {1}{U}',
+    });
+    const roles = classifyCardRoles(mizziumSkin).assignments.map((a) => a.role);
+    expect(roles).not.toContain('board_wipe');
+    expect(roles).toContain('protection');
   });
 
   it('never emits duplicate role+ruleId pairs', () => {

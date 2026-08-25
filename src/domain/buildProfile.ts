@@ -1,6 +1,9 @@
 import { computeStats } from './computeStats';
 import { identifyCommanders, toCommanderInfo } from './commander';
 import { analyzeDeckRoles } from './roles';
+import { analyzeDeckTags } from './tags';
+import { analyzeDeckStrategy } from './strategy';
+import { inferDeckArchetypes } from './archetypes';
 import { nameLookupKeys } from './normalizeName';
 import { validateDeck } from './validateDeck';
 import type {
@@ -114,6 +117,9 @@ export function buildDeckProfile(input: BuildProfileInput): DeckProfile {
   const validation = validateDeck(composition, issues);
   const stats = computeStats(composition);
   const roles = analyzeDeckRoles(composition);
+  const tags = analyzeDeckTags(composition);
+  const strategy = analyzeDeckStrategy(composition);
+  const archetypes = inferDeckArchetypes(composition, strategy);
 
   return {
     deckId: input.deckId ?? null,
@@ -123,6 +129,9 @@ export function buildDeckProfile(input: BuildProfileInput): DeckProfile {
     validation,
     stats,
     roles,
+    tags,
+    strategy,
+    archetypes,
     unresolved,
     parseErrors: input.parsed.errors,
     generatedAt: (input.now?.() ?? new Date()).toISOString(),

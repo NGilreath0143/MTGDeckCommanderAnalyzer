@@ -78,6 +78,146 @@ export interface DeckRoleProfile {
 }
 
 /**
+ * Strategy tags describing the mechanics and strategic capabilities a card
+ * advances. Deliberately distinct from CardRole: a role says what a card DOES
+ * functionally (ramp, removal), a tag says which strategy it PARTICIPATES in.
+ *
+ * Semantic rules these encode:
+ *  - A card type alone never implies participation (Sol Ring is not an
+ *    artifact-strategy card; Teferi is not a planeswalker-strategy card).
+ *  - Mentioning or interacting with a mechanic is not enough; the card must
+ *    advance the user's strategy involving it (Solemnity opposes counters).
+ *  - A contextual tag requires strong strategic synergy, not mere
+ *    compatibility with resources the strategy produces.
+ */
+export type CardTag =
+  // Counters
+  | 'counter_generation'
+  | 'counter_payoff'
+  | 'counter_doubling'
+  | 'proliferate'
+  | 'plus_one_counters'
+
+  // Tokens
+  | 'token_generation'
+  | 'token_payoff'
+  | 'token_doubling'
+
+  // Sacrifice / Death
+  | 'sacrifice_outlet'
+  | 'sacrifice_fodder'
+  | 'sacrifice_payoff'
+  | 'death_payoff'
+
+  // Graveyard
+  | 'graveyard_filling'
+  | 'self_mill'
+  | 'graveyard_payoff'
+  | 'reanimation'
+
+  // Artifacts
+  | 'artifact_generation'
+  | 'artifact_payoff'
+  | 'artifact_cost_reduction'
+  | 'artifact_sacrifice'
+
+  // Enchantments
+  | 'enchantment_generation'
+  | 'enchantment_payoff'
+  | 'enchantment_cost_reduction'
+  | 'aura'
+
+  // Spells
+  | 'spell_payoff'
+  | 'spell_copy'
+  | 'spell_cost_reduction'
+  | 'spell_recursion'
+
+  // Lands
+  | 'landfall'
+  | 'land_payoff'
+  | 'land_recursion'
+
+  // Combat
+  | 'attack_payoff'
+  | 'combat_damage_payoff'
+  | 'extra_combat'
+  | 'voltron'
+  | 'go_wide_payoff'
+
+  // Planeswalkers
+  | 'planeswalker_payoff'
+  | 'planeswalker_generation'
+  | 'planeswalker_doubling';
+
+export const CARD_TAGS: readonly CardTag[] = [
+  'counter_generation',
+  'counter_payoff',
+  'counter_doubling',
+  'proliferate',
+  'plus_one_counters',
+  'token_generation',
+  'token_payoff',
+  'token_doubling',
+  'sacrifice_outlet',
+  'sacrifice_fodder',
+  'sacrifice_payoff',
+  'death_payoff',
+  'graveyard_filling',
+  'self_mill',
+  'graveyard_payoff',
+  'reanimation',
+  'artifact_generation',
+  'artifact_payoff',
+  'artifact_cost_reduction',
+  'artifact_sacrifice',
+  'enchantment_generation',
+  'enchantment_payoff',
+  'enchantment_cost_reduction',
+  'aura',
+  'spell_payoff',
+  'spell_copy',
+  'spell_cost_reduction',
+  'spell_recursion',
+  'landfall',
+  'land_payoff',
+  'land_recursion',
+  'attack_payoff',
+  'combat_damage_payoff',
+  'extra_combat',
+  'voltron',
+  'go_wide_payoff',
+  'planeswalker_payoff',
+  'planeswalker_generation',
+  'planeswalker_doubling',
+];
+
+/** One positive tag match, naming the deterministic rule that fired. */
+export interface CardTagAssignment {
+  tag: CardTag;
+  /** Stable kebab-case rule identifier. */
+  ruleId: string;
+}
+
+/** Zero or more tag assignments for a single card. */
+export interface CardTagAnalysis {
+  /** The card's scryfallId. */
+  cardId: string;
+  assignments: CardTagAssignment[];
+}
+
+/**
+ * Deck-level tag aggregation. Tags are multi-valued, so totals are NOT
+ * expected to sum to the deck size.
+ */
+export interface DeckTagProfile {
+  /** Quantity-weighted: 4 copies of a landfall card contribute 4. */
+  counts: Record<CardTag, number>;
+  /** Distinct card names, commanders first then mainboard order. */
+  cardsByTag: Record<CardTag, string[]>;
+}
+
+/**
  * The single internal card shape. Both cached rows and freshly fetched
  * Scryfall responses are mapped to this before any domain code sees them,
  * so cache-vs-network can never change analysis behaviour.
@@ -193,10 +333,174 @@ export interface DeckComposition {
 }
 
 /**
+ * Broad strategic families a deck can pursue. Phase 3B scores how strongly each
+ * is present; it deliberately does NOT infer named archetypes (Aristocrats,
+ * Superfriends, Voltron), which is a later phase's job.
+ */
+export type StrategySignalType =
+  | 'counters'
+  | 'tokens'
+  | 'sacrifice'
+  | 'graveyard'
+  | 'artifacts'
+  | 'enchantments'
+  | 'spells'
+  | 'lands'
+  | 'combat'
+  | 'planeswalkers';
+
+export const STRATEGY_SIGNAL_TYPES: readonly StrategySignalType[] = [
+  'counters',
+  'tokens',
+  'sacrifice',
+  'graveyard',
+  'artifacts',
+  'enchantments',
+  'spells',
+  'lands',
+  'combat',
+  'planeswalkers',
+];
+
+/**
+ * Calibration bands for a final 0-100 score. These are calibration values,
+ * not permanent truths.
+ */
+export type StrategyStrength =
+  | 'negligible'
+  | 'minor'
+  | 'supporting'
+  | 'strong'
+  | 'defining';
+
+export interface StrategyCoverage {
+  /** Quantity-weighted mainboard cards carrying a family tag. */
+  taggedCards: number;
+  /** Quantity-weighted mainboard cards counted by approved type evidence. */
+  additionalEvidenceCards: number;
+  /** Deduplicated union of the two above. */
+  participatingCards: number;
+  /** Actual composition size, not an assumed 99. */
+  mainboardSize: number;
+  density: number;
+  score: number;
+}
+
+export interface StrategyRelationshipResult {
+  id: string;
+  /** min(countA, countB), kept for diagnostics. */
+  rawSupport: number;
+  /**
+   * Support after removing one-card self-synergy: a single card carrying both
+   * sides cannot form an engine alone.
+   */
+  distinctSupport: number;
+  score: number;
+  maxScore: number;
+}
+
+export interface StrategyStructure {
+  score: number;
+  relationships: StrategyRelationshipResult[];
+}
+
+export interface StrategyCapDiagnostic {
+  applied: boolean;
+  reason?: string;
+  maximum?: number;
+}
+
+export interface StrategySignal {
+  strategy: StrategySignalType;
+  /** Final score after any cap, 0-100. */
+  score: number;
+  /** Uncapped component total, preserved for diagnostics. */
+  rawScore: number;
+  strength: StrategyStrength;
+  coverageScore: number;
+  structureScore: number;
+  diversityScore: number;
+  commanderScore: number;
+  coverage: StrategyCoverage;
+  structure: StrategyStructure;
+  /** Family tags present anywhere in the deck, commanders included. */
+  representedTags: string[];
+  /** Distinct family tags across all commanders collectively. */
+  commanderTags: string[];
+  cap: StrategyCapDiagnostic;
+}
+
+export interface DeckStrategyProfile {
+  signals: StrategySignal[];
+}
+
+/** Archetypes are recognizable deck plans; themes are strategic motifs. */
+export type InferenceKind = 'archetype' | 'theme';
+
+export type ArchetypeInferenceType =
+  | 'aristocrats'
+  | 'reanimator'
+  | 'superfriends'
+  | 'spellslinger'
+  | 'voltron'
+  | 'aura_voltron'
+  | 'enchantress'
+  | 'counters'
+  | 'proliferate'
+  | 'tokens'
+  | 'go_wide'
+  | 'artifacts'
+  | 'landfall'
+  | 'lands';
+
+export const ARCHETYPE_INFERENCE_TYPES: readonly ArchetypeInferenceType[] = [
+  'aristocrats',
+  'reanimator',
+  'superfriends',
+  'spellslinger',
+  'voltron',
+  'aura_voltron',
+  'enchantress',
+  'counters',
+  'proliferate',
+  'tokens',
+  'go_wide',
+  'artifacts',
+  'landfall',
+  'lands',
+];
+
+/** Initial calibration bands. Explicitly NOT final. */
+export type InferenceConfidence = 'weak' | 'possible' | 'likely' | 'defining';
+
+/** One piece of visible reasoning behind an inference. */
+export interface ArchetypeEvidenceItem {
+  id: string;
+  description: string;
+  value?: number | string | boolean;
+  contribution?: number;
+}
+
+export interface ArchetypeInference {
+  archetype: ArchetypeInferenceType;
+  kind: InferenceKind;
+  score: number;
+  confidence: InferenceConfidence;
+  /** Set when this inference specializes another (aura_voltron -> voltron). */
+  parent?: ArchetypeInferenceType;
+  /** False means the required anchor was absent; score is then 0. */
+  anchorSatisfied: boolean;
+  evidence: ArchetypeEvidenceItem[];
+}
+
+export interface DeckArchetypeProfile {
+  inferences: ArchetypeInference[];
+}
+
+/**
  * The structured result of profiling a decklist.
  *
  * Later features attach as optional sibling keys, so nothing here changes:
- *   strategy?: StrategyProfile
  *   analysis?: LlmAnalysis
  */
 export interface DeckProfile {
@@ -212,4 +516,10 @@ export interface DeckProfile {
   generatedAt: string;
   /** Deterministic card-role classification. */
   roles?: DeckRoleProfile;
+  /** Deterministic strategy-tag classification. */
+  tags?: DeckTagProfile;
+  /** Deterministic deck-level strategy signals. */
+  strategy?: DeckStrategyProfile;
+  /** Deterministic archetype and theme inference. */
+  archetypes?: DeckArchetypeProfile;
 }

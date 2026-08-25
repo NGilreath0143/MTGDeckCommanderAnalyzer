@@ -1,0 +1,66 @@
+Commander:
+1 Mizzix of the Izmagnus
+Deck
+1 Talrand, Sky Summoner
+1 Guttersnipe
+1 Archmage Emeritus
+1 Murmuring Mystic
+1 Ral, Storm Conduit
+1 Young Pyromancer
+1 Adeliz, the Cinder Wind
+1 Veyran, Voice of Duality
+1 Storm-Kiln Artist
+1 Thousand-Year Storm
+1 Baral, Chief of Compliance
+1 Goblin Electromancer
+1 Snapcaster Mage
+1 Past in Flames
+1 Counterspell
+1 Swan Song
+1 Negate
+1 Dovin's Veto
+1 Flusterstorm
+1 An Offer You Can't Refuse
+1 Stern Scolding
+1 Cyclonic Rift
+1 Brainstorm
+1 Ponder
+1 Preordain
+1 Opt
+1 Serum Visions
+1 Sleight of Hand
+1 Anticipate
+1 Impulse
+1 Dig Through Time
+1 Frantic Search
+1 Divination
+1 Night's Whisper
+1 Read the Bones
+1 Faithless Looting
+1 Light Up the Stage
+1 Mystical Tutor
+1 Solve the Equation
+1 Sol Ring
+1 Arcane Signet
+1 Fellwar Stone
+1 Mind Stone
+1 Talisman of Curiosity
+1 Rhystic Study
+1 Mystic Remora
+1 Command Tower
+1 Exotic Orchard
+1 Reflecting Pool
+1 Path of Ancestry
+1 Polluted Delta
+1 Flooded Strand
+1 Watery Grave
+1 Steam Vents
+1 Drowned Catacomb
+1 Glacial Fortress
+1 Adarkar Wastes
+1 Underground River
+1 Morphic Pool
+1 Sea of Clouds
+1 Deserted Beach
+9 Island
+29 Mountain
