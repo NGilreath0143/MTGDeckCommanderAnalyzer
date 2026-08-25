@@ -496,3 +496,34 @@ Until then the Composite Power Index is frozen as a provisional internal
 comparative index. This is a calibration gap, **not** a defect in the geometric
 mean, and must not be papered over with an unvalidated rescaling.
 
+## 29. A fresh Git worktree is not independently runnable
+
+**Found by:** Phase 5A.2a regression harness
+**Affects:** developer tooling and any future regression comparison
+
+A `git worktree` created at a commit cannot run the evaluators as-is. Three
+dependencies are absent because they are gitignored or untracked:
+
+- `src/generated/` — the Prisma client (`.gitignore:39`), regenerated with
+  `npm run db:generate`
+- `node_modules`
+- environment configuration (`.env`)
+
+This bit during the Phase 5A.2a regression check. The first baseline run
+appeared to show **seven of eight frozen evaluators changing**. They had not:
+every baseline process died with `ERR_MODULE_NOT_FOUND` on `@/generated`, and
+the diff was comparing stack traces against real evaluator output. Symlinking
+`src/generated`, `node_modules` and `.env` into the worktree produced valid
+baselines, and all eight were then byte-identical.
+
+The failure mode is dangerous because it is silent in the direction that
+matters: a broken baseline manufactures apparent regressions, which invites
+"fixing" code that was never wrong.
+
+Any regression harness must prepare those dependencies and assert the baseline
+actually produced output — for instance that the run emitted no error and
+matched the expected line count — before treating a diff as meaningful.
+
+Deliberately not fixed here: application behaviour is correct, and this is a
+developer-tooling concern rather than a defect in the analyzer.
+

@@ -25,6 +25,19 @@ export interface ResolveCardsResult {
   stats: { requested: number; cacheHits: number; fetched: number; requests: number };
 }
 
+/**
+ * The front-face name of a multi-face card name, or null when there is none.
+ *
+ * Reuses the same ` // ` split `nameLookupKeys` relies on rather than adding a
+ * second parser for multi-face names.
+ */
+function frontFaceName(name: string): string | null {
+  const index = name.indexOf('//');
+  if (index < 0) return null;
+  const front = name.slice(0, index).trim();
+  return front === '' ? null : front;
+}
+
 /** Index a card under its canonical name and, for DFCs, its front face. */
 function indexCard(map: Map<string, ResolvedCard>, card: ResolvedCard): void {
   for (const key of nameLookupKeys(card.name)) {
@@ -89,6 +102,76 @@ export async function resolveCards(
       if (!record) continue;
       const card = byName.get(normalizeCardName(record.name));
       if (card) byName.set(key, card);
+    }
+
+    /*
+     * Multi-face retry.
+     *
+     * `/cards/collection` matches a multi-face card by its FRONT FACE only and
+     * returns not_found for the full canonical `A // B` name — verified live
+     * across every family: modal DFCs (Birgi, Sink into Stupor, Agadeem's
+     * Awakening), transforming DFCs (Malakir Rebirth), pathway lands
+     * (Clearwater Pathway) and split cards (Wear // Tear). This is the reverse
+     * of `/cards/named`, which accepts either form.
+     *
+     * A decklist exported from most tools writes the full canonical name, so
+     * every such card was silently unresolved: 26 of 38 analyzer-valid cEDH
+     * lists in the Phase 5A.2 corpus were affected.
+     *
+     * Retry those with the front-face name that `nameLookupKeys` already
+     * derives, then alias the ORIGINAL requested key onto the resolved card so
+     * the caller's spelling still finds it. Only names Scryfall explicitly
+     * rejected are retried, and only when a front face actually differs from
+     * what was already sent, so an ordinary miss is not retried and a typo
+     * cannot be coerced into a match.
+     */
+    const stillMissing = missingKeys.filter((key) => !byName.has(key));
+    const frontFaceRetry = new Map<string, string>();
+    for (const key of stillMissing) {
+      const requested = requestedByKey.get(key) ?? key;
+      const front = frontFaceName(requested);
+      if (front === null) continue;
+      const frontKey = normalizeCardName(front);
+      if (!frontKey || frontKey === key) continue;
+      // A card already resolved under the front-face key needs no request.
+      const existing = byName.get(frontKey);
+      if (existing) {
+        byName.set(key, existing);
+        continue;
+      }
+      frontFaceRetry.set(key, front);
+    }
+
+    if (frontFaceRetry.size > 0) {
+      const retryKeys = [...frontFaceRetry.keys()];
+      const retry = await deps.scryfall.fetchCollection(
+        retryKeys.map((key) => ({ name: frontFaceRetry.get(key)! })),
+      );
+      requests += retry.requests;
+
+      if (retry.found.length > 0) {
+        const savedRetry = await deps.cardRepo.upsertMany(retry.found.map(mapScryfallCard));
+        fetched += savedRetry.length;
+        for (const card of savedRetry) indexCard(byName, card);
+      }
+
+      /*
+       * Same echoed-identifier pairing as above, but keyed on the FRONT-FACE
+       * name we sent rather than the original request.
+       */
+      const retryNotFound = new Set(retry.notFound.map((id) => normalizeCardName(id.name)));
+      const retryRecords = retry.found.map(mapScryfallCard);
+      const claimedRetry = retryKeys.filter(
+        (key) => !retryNotFound.has(normalizeCardName(frontFaceRetry.get(key)!)),
+      );
+      for (const [i, key] of claimedRetry.entries()) {
+        if (byName.has(key)) continue;
+        const record = retryRecords[i];
+        if (!record) continue;
+        const card = byName.get(normalizeCardName(record.name));
+        // Alias the caller's original spelling onto the canonical card.
+        if (card) byName.set(key, card);
+      }
     }
   }
 
