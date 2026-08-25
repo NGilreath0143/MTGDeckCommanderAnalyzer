@@ -1,3 +1,4 @@
+import { CARD_TAGS } from '@/domain/types';
 import { describe, expect, it } from 'vitest';
 import { buildDeckProfile, composeDeck } from '@/domain/buildProfile';
 import { parseDecklist } from '@/domain/parseDecklist';
@@ -160,7 +161,7 @@ describe('buildDeckProfile', () => {
     });
 
     // Every tag key is always present, so consumers need no existence checks.
-    expect(Object.keys(profile.tags?.counts ?? {})).toHaveLength(39);
+    expect(Object.keys(profile.tags?.counts ?? {})).toHaveLength(CARD_TAGS.length);
     // None of these four cards participates in a tagged strategy.
     const total = Object.values(profile.tags?.counts ?? {}).reduce((a, b) => a + b, 0);
     expect(total).toBe(0);

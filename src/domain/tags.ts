@@ -59,6 +59,61 @@ const ANTI_COUNTER =
 /** A continuous or triggered benefit, as opposed to a one-shot mention. */
 const TRIGGER = /\b(?:whenever|when|at the beginning of)\b/i;
 
+/**
+ * --- graveyard recursion helpers -----------------------------------------
+ *
+ * Opponent-graveyard theft is not "my graveyard is a reusable resource".
+ * Rejected unless the card also reuses your own graveyard: Pulsemage Advocate
+ * hits both, and legitimately qualifies on its own half.
+ */
+const OPPONENT_GRAVEYARD_ONLY =
+  /\bfrom an opponent's graveyard\b|\btarget opponent's graveyard\b|\bfrom your opponents' graveyards\b|\ba graveyard other than yours\b/i;
+
+/**
+ * Exiling your own graveyard as an additional cost CONSUMES the resource
+ * rather than reusing it. Harvest Pyre, Stitched Drake and Corpse Lunge are
+ * graveyard payoffs, not recursion. Verified live during the tag pass.
+ */
+const GRAVEYARD_AS_COST =
+  /\bas an additional cost\b[^.]{0,80}?\bexile\b[^.]{0,60}?\bfrom your graveyard\b/i;
+
+/**
+ * The shapes that genuinely replay a card from a graveyard.
+ *
+ * Deliberately broader than `reanimation` (battlefield only) and orthogonal to
+ * `land_recursion` / `spell_recursion`, which say WHICH card type comes back.
+ * This tag says the graveyard is a reusable resource at all, which is the
+ * strategic capability Reanimator/Graveyard decks are actually built on.
+ */
+const GRAVEYARD_RECURSION_SHAPES: readonly RegExp[] = [
+  // "return target card from your graveyard to your hand / the battlefield"
+  /\breturn\b[^.]{0,80}?\bfrom (?:a|your|their|its owner's) graveyard\b/i,
+  // "put target card from a graveyard onto the battlefield / on top of library"
+  /\bput\b[^.]{0,80}?\bfrom (?:a|your|their) graveyard\b[^.]{0,40}?\b(?:onto the battlefield|on top of|into your hand)\b/i,
+  // permission to replay: Muldrotha, Crucible of Worlds, Gravecrawler
+  /\b(?:may )?(?:cast|play)\b[^.]{0,60}?\bfrom your graveyard\b/i,
+  // granting flashback/escape to cards already in the graveyard
+  /\bcards? in your graveyard\b[^.]{0,60}?\b(?:gains?|have|has)\b[^.]{0,30}?\b(?:flashback|escape)\b/i,
+  // Aura enchanting a card IN a graveyard: Animate Dead's graveyard reference
+  // lives in its "Enchant" line, so no single clause says "return ... from".
+  /\benchant\b[^.\n]{0,40}?\bcard in a graveyard\b/i,
+  // Living Death / Living End: exile from graveyards, then return them all
+  /\bexiles? all\b[^.]{0,60}?\bfrom their graveyard\b[^.]{0,120}?\bputs? all cards they exiled this way onto the battlefield\b/i,
+];
+
+function reusesGraveyard(text: string): boolean {
+  if (OPPONENT_GRAVEYARD_ONLY.test(text) && !/\byour graveyard\b/i.test(text)) return false;
+  if (!GRAVEYARD_RECURSION_SHAPES.some((re) => re.test(text))) return false;
+  // A cost-only interaction never earns the tag by itself.
+  if (GRAVEYARD_AS_COST.test(text)) {
+    const stripped = text.replace(GRAVEYARD_AS_COST, ' ');
+    return GRAVEYARD_RECURSION_SHAPES.some((re) => re.test(stripped));
+  }
+  return true;
+}
+
+
+
 /** Ability-word prefixes appear literally in Oracle text. */
 const LANDFALL_WORD = /(?:^|\n)\s*Landfall\s*—/i;
 const CONSTELLATION_WORD = /(?:^|\n)\s*Constellation\s*—/i;
@@ -320,6 +375,17 @@ const TAG_RULES: TagRule[] = [
       /\bput\b[^.]{0,60}?\bfrom a graveyard onto the battlefield\b/i.test(text.front) ||
       /\bcards? in your graveyard (?:has|have) escape\b/i.test(text.front) ||
       /\b(?:cast|play)\b[^.]{0,40}?\bfrom your graveyard\b/i.test(text.front),
+  },
+
+  {
+    /*
+     * Umbrella strategic tag: the graveyard is a reusable resource. Broader
+     * than `reanimation` and independent of `land_recursion` /
+     * `spell_recursion`; multi-tagging is expected and correct.
+     */
+    id: 'reuses-graveyard',
+    tag: 'graveyard_recursion',
+    matches: (_card, text) => reusesGraveyard(text.front),
   },
 
   // === Artifacts ==========================================================

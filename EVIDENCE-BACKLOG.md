@@ -139,3 +139,40 @@ All nine real commanders return no interaction/board_wipe/graveyard_hate role,
 so there are zero positive instances to build a signal from. Interaction omits
 a commander component entirely rather than inventing a coarse boolean —
 the same conclusion reached for `commanderAccess` in item 2.
+
+## 12. Animate Dead does not carry the `reanimation` tag
+
+**Found by:** Phase 3A `graveyard_recursion` repair
+**Affects:** Phase 3A `tags.ts`, `reanimates` rule
+
+Animate Dead reads "Enchant creature card in a graveyard" on one line and
+"Return enchanted creature card to the battlefield" on another. The
+`reanimation` rule looks for a graveyard reference inside the returning clause,
+so no clause ever matches and the card carries only `aura`.
+
+Deliberately NOT fixed during the `graveyard_recursion` repair: widening an
+unrelated rule mid-repair is how precision regressions get introduced. The
+umbrella tag covers Animate Dead for recovery purposes, so nothing downstream
+is currently blocked.
+
+If revisited, the fix is cross-clause subject attribution for Auras that
+enchant a card in a graveyard, evaluated against the full corpus.
+
+## 13. `reanimator` archetype is a hybrid and may warrant a split
+
+**Found by:** Phase 4B.4 inspection, confirmed by the `graveyard_recursion` repair
+**Affects:** Phase 3C `archetypes.ts`, `PRIMARY_SUPPORT_TAGS`
+
+The archetype anchors on nonland reanimation (>= 3), which is creature-specific,
+but its density term already scores `graveyard_payoff`, and the real fixture is
+named `graveyard-recursion-99`. It currently represents a hybrid of **creature
+reanimation + broader graveyard value**.
+
+Recommendation is to **split rather than rename**:
+
+- `reanimator` — cheat large creatures onto the battlefield
+- `graveyard_value` / `graveyard_recursion` — Muldrotha, Regrowth, Eternal
+  Witness, Praetor's Counsel
+
+These are genuinely different plans that share a zone; renaming would blur them.
+Not urgent, and deliberately not done during the vocabulary repair.

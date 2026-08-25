@@ -251,3 +251,56 @@ describe('analyzeDeckTags', () => {
     for (const t of CARD_TAGS) expect(profile.counts[t]).toBe(0);
   });
 });
+
+describe('graveyard_recursion', () => {
+  /*
+   * Umbrella tag: "my graveyard is a reusable resource". Broader than
+   * reanimation, orthogonal to land_recursion / spell_recursion.
+   */
+  const tagsOf = (name: string) =>
+    classifyCardTags(realCard(name)).assignments.map((a) => a.tag);
+
+  it.each([
+    'Regrowth', 'Eternal Witness', 'Timeless Witness', "Praetor's Counsel",
+    'Living Death', 'Noxious Revival', 'Wildest Dreams', 'Animate Dead',
+    'Snapcaster Mage', 'Past in Flames', 'Underworld Breach', 'Reanimate',
+    'Life from the Loam', 'Crucible of Worlds', 'Ramunap Excavator',
+  ])('tags %s', (name) => expect(tagsOf(name)).toContain('graveyard_recursion'));
+
+  it.each([
+    'Wonder', "Stitcher's Supplier", 'Entomb', 'Rest in Peace', "Tormod's Crypt",
+  ])('does not tag %s, which never reuses the graveyard', (name) =>
+    expect(tagsOf(name)).not.toContain('graveyard_recursion'));
+
+  it('multi-tags rather than replacing the specific tags', () => {
+    // Life from the Loam is both umbrella recursion AND land recursion.
+    const loam = tagsOf('Life from the Loam');
+    expect(loam).toContain('graveyard_recursion');
+    expect(loam).toContain('land_recursion');
+
+    // Snapcaster is umbrella recursion AND spell recursion AND a payoff.
+    const snap = tagsOf('Snapcaster Mage');
+    expect(snap).toContain('graveyard_recursion');
+    expect(snap).toContain('spell_recursion');
+    expect(snap).toContain('graveyard_payoff');
+
+    /*
+     * Animate Dead is umbrella recursion AND an aura. It notably does NOT
+     * carry `reanimation`: its graveyard reference lives in the "Enchant
+     * creature card in a graveyard" line, which the reanimation rule cannot
+     * see. That pre-existing gap is exactly what this umbrella tag closes,
+     * and is left unchanged here.
+     */
+    const ad = tagsOf('Animate Dead');
+    expect(ad).toContain('graveyard_recursion');
+    expect(ad).toContain('aura');
+    expect(ad).not.toContain('reanimation');
+  });
+
+  it('reaches cards that carry no other strategy tag at all', () => {
+    // The gap that motivated the tag: these were previously untagged.
+    for (const n of ['Regrowth', 'Eternal Witness', "Praetor's Counsel", 'Living Death']) {
+      expect(tagsOf(n), n).toEqual(['graveyard_recursion']);
+    }
+  });
+});

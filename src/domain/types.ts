@@ -113,6 +113,7 @@ export type CardTag =
   | 'graveyard_filling'
   | 'self_mill'
   | 'graveyard_payoff'
+  | 'graveyard_recursion'
   | 'reanimation'
 
   // Artifacts
@@ -166,6 +167,7 @@ export const CARD_TAGS: readonly CardTag[] = [
   'graveyard_filling',
   'self_mill',
   'graveyard_payoff',
+  'graveyard_recursion',
   'reanimation',
   'artifact_generation',
   'artifact_payoff',
