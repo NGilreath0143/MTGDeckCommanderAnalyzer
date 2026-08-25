@@ -50,6 +50,12 @@ describe('src/eval boundary', () => {
     'src/domain/cardText.ts',
     'src/domain/strategy.ts',
     'src/domain/archetypes.ts',
+    'src/domain/powerCards.ts',
+    'src/domain/knownCombos.ts',
+    'src/domain/manaBase.ts',
+    'src/domain/powerEvidence.ts',
+    'src/domain/tutorRelevance.ts',
+    'src/domain/speed.ts',
   ])(
     'keeps %s depending only on other domain modules',
     (file) => {

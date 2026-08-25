@@ -4,6 +4,7 @@ import { analyzeDeckRoles } from './roles';
 import { analyzeDeckTags } from './tags';
 import { analyzeDeckStrategy } from './strategy';
 import { inferDeckArchetypes } from './archetypes';
+import { extractDeckPowerEvidence } from './powerEvidence';
 import { nameLookupKeys } from './normalizeName';
 import { validateDeck } from './validateDeck';
 import type {
@@ -120,6 +121,7 @@ export function buildDeckProfile(input: BuildProfileInput): DeckProfile {
   const tags = analyzeDeckTags(composition);
   const strategy = analyzeDeckStrategy(composition);
   const archetypes = inferDeckArchetypes(composition, strategy);
+  const power = extractDeckPowerEvidence(composition, strategy, archetypes);
 
   return {
     deckId: input.deckId ?? null,
@@ -132,6 +134,7 @@ export function buildDeckProfile(input: BuildProfileInput): DeckProfile {
     tags,
     strategy,
     archetypes,
+    power,
     unresolved,
     parseErrors: input.parsed.errors,
     generatedAt: (input.now?.() ?? new Date()).toISOString(),

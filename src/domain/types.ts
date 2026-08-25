@@ -239,6 +239,12 @@ export interface ResolvedCard {
   /** "" when absent; faces joined with "\n//\n". */
   oracleText: string;
   commanderLegality: Legality;
+  /**
+   * Colors this card can produce, from Scryfall's `produced_mana`. Optional
+   * because it comes from the retained raw payload; absent for hand-built
+   * fixtures. Not oracle-text derivable (duals hide mana in reminder text).
+   */
+  producedMana?: ColorCode[];
 }
 
 export type DeckSection = 'main' | 'commander' | 'sideboard';
@@ -434,6 +440,8 @@ export interface DeckStrategyProfile {
   signals: StrategySignal[];
 }
 
+import type { DeckPowerEvidence } from './powerEvidence';
+
 /** Archetypes are recognizable deck plans; themes are strategic motifs. */
 export type InferenceKind = 'archetype' | 'theme';
 
@@ -522,4 +530,6 @@ export interface DeckProfile {
   strategy?: DeckStrategyProfile;
   /** Deterministic archetype and theme inference. */
   archetypes?: DeckArchetypeProfile;
+  /** Deterministic power-relevant evidence (no score). */
+  power?: DeckPowerEvidence;
 }
