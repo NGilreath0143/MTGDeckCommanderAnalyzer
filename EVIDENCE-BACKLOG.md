@@ -78,3 +78,64 @@ Consistency discloses this as a per-deck limitation whenever selection is nonzer
 
 `Walking Ballista` has printed MV 0, so X-cost combo pieces understate their
 real cost.
+
+## 6. `targetCoverage.graveyard` is structurally unusable
+
+**Found by:** Phase 4B.3 (Interaction)
+**Affects:** Phase 4A `powerEvidence.ts` interaction coverage
+
+The coverage loop visits only cards carrying the `interaction` role, but
+graveyard answers (Bojuka Bog, Tormod's Crypt, Rest in Peace) carry
+`graveyard_hate` instead. The field is therefore **0 on every real fixture**,
+including a deck running nine graveyard-hate cards.
+
+Interaction works around it by deriving graveyard capability from
+`graveyardHateCount`. Repairing the field upstream would let coverage treat
+graveyard as an ordinary category.
+
+## 7. `graveyardInteractionCount` duplicates `graveyardHateCount`
+
+**Found by:** Phase 4B.3 (Interaction)
+**Affects:** Phase 4A `InteractionEvidence`
+
+Both are computed as `sum(slots, s => s.roles.has('graveyard_hate'))` and are
+identical on all nine real decks. The field carries no additional information
+and is unused by Interaction.
+
+## 8. No instant-speed flag on interaction
+
+**Found by:** Phase 4B.3 (Interaction)
+**Affects:** Phase 4A `powerCards.ts`
+
+Swords to Plowshares and Vindicate are indistinguishable on timing, so
+Interaction cannot reward holding up an answer versus committing at sorcery
+speed. This is a genuine gap in interaction quality measurement.
+
+## 9. No free interaction in the real fixture corpus
+
+**Found by:** Phase 4B.3 (Interaction)
+**Affects:** fixture coverage, not a formula
+
+`freeInteractionCount` is 0 across all nine real decks, so the 3.0 free weight
+is exercised only by synthetics. Evidence scarcity rather than a defect; a
+future fixture carrying Force of Will or Fierce Guardianship would exercise it.
+
+## 10. Stax asymmetry is not modelled
+
+**Found by:** Phase 4A, confirmed by Phase 4B.3
+**Affects:** `StaxEvidence`
+
+A symmetric prison piece and a one-sided one score identically. Interaction
+caps stax at 10 and leads with breadth to limit the consequences, but a deck
+built to break its own symmetry is not distinguished from one that suffers
+under it.
+
+## 11. Commander-supplied interaction is not measurable
+
+**Found by:** Phase 4B.3 (Interaction)
+**Affects:** Phase 2 roles on commanders
+
+All nine real commanders return no interaction/board_wipe/graveyard_hate role,
+so there are zero positive instances to build a signal from. Interaction omits
+a commander component entirely rather than inventing a coarse boolean —
+the same conclusion reached for `commanderAccess` in item 2.

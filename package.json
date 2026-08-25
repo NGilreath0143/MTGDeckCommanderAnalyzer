@@ -22,7 +22,8 @@
     "eval:archetypes": "tsx scripts/eval-archetypes.ts",
     "eval:power": "tsx scripts/eval-power.ts",
     "eval:speed": "tsx scripts/eval-speed.ts",
-    "eval:consistency": "tsx scripts/eval-consistency.ts"
+    "eval:consistency": "tsx scripts/eval-consistency.ts",
+    "eval:interaction": "tsx scripts/eval-interaction.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
