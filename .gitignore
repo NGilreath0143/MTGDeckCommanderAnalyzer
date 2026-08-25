@@ -48,3 +48,7 @@ phase-*-claude-instructions.md
 # corpus/meta/ and corpus/analysis/ are committed; see README.
 corpus/decks/
 corpus/bundles/
+
+# Private curator/source decklists for the Phase 5A calibration pilot.
+# Provenance inputs, not repository content; kept local by design.
+user_curated_decks/

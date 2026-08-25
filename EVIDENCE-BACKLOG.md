@@ -527,3 +527,39 @@ matched the expected line count — before treating a diff as meaningful.
 Deliberately not fixed here: application behaviour is correct, and this is a
 developer-tooling concern rather than a defect in the analyzer.
 
+## 30. Silent decklist-parsing defects found only by real player lists
+
+**Found by:** Phase 5A.2b, while validating user-authored candidate decks
+**Affects:** Phase 1 `parseDecklist` (repaired)
+
+Two defects survived every synthetic fixture and were exposed the first time
+real, externally authored decklists were ingested.
+
+**Quantity parsing corrupted X-leading card names.** The multiplier pattern
+`/^(\d+)\s*[xX]\s*(.+)$/` allowed whitespace on both sides of the `x`, so
+`1 Xenagos, God of Revels` matched the multiplier branch and the `[xX]` class
+consumed the card's own leading X, yielding `enagos, God of Revels`. Verified
+live: **27 Commander-legal cards** are affected, including `Xantid Swarm`,
+`Xanthic Statue`, `Xantcha, Sleeper Agent` and `Xander's Lounge`.
+
+**An explicit `Commander` section was never closed by a blank line.** Section
+state advanced only on an explicit header, so an export using a blank line
+instead of a `Deck` header — the MTGO/Arena convention — left the section set
+to `commander` for the remainder of the file: 99 commanders, one
+TOO_MANY_COMMANDERS error and roughly 60 spurious INVALID_COMMANDER errors.
+
+Both are now repaired with regression coverage. Recorded because the *class*
+of defect matters more than the instances:
+
+- both were **silent in the corrupting direction**. The X bug produced no parse
+  error and no warning; the fabricated name simply failed lookup later, where
+  it read as bad source data rather than a parser fault. It was in fact
+  initially misdiagnosed that way.
+- the nine hand-built fixture decklists contain no X-leading card and no
+  blank-line sectioning, so every frozen evaluator output was byte-identical
+  before and after. **The fixture corpus could not have caught either bug.**
+
+Implication for future ingestion work: synthetic fixtures validate the parser
+against formats we already thought of. Externally sourced lists are the only
+thing that tests it against formats we did not.
+

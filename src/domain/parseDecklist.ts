@@ -74,12 +74,27 @@ export function parseLine(
   /*
    * Quantity: "1", "1x", "1 x", or absent (implicitly 1).
    *
-   * Capped at three digits so a card whose name starts with a year parses
-   * correctly ("1996 World Champion"). Real decklist quantities are small,
-   * and an explicit "x" ("1996x Foo") is still read as a quantity.
+   * The multiplier marker must be syntactically distinct from the first
+   * letter of the card name, which is why there are two separate x-forms
+   * rather than one permissive `\s*[xX]\s*`:
+   *
+   *   ADJACENT  "1x Sol Ring"    — the x touches the digit
+   *   SPACED    "1 x Sol Ring"   — whitespace on BOTH sides of the x
+   *
+   * A single pattern allowing optional space on either side read
+   * "1 Xenagos, God of Revels" as quantity 1 times "enagos, God of Revels",
+   * silently corrupting all 27 Commander-legal cards whose name begins with
+   * X (Xantid Swarm, Xanthic Statue, Xantcha, Xander's Lounge...). The spaced
+   * form cannot match such a line because no whitespace follows the name's X.
+   *
+   * The plain form is capped at three digits so a card whose name starts with
+   * a year parses correctly ("1996 World Champion"). An explicit x still
+   * reads as a quantity at any width ("1996x Foo").
    */
   const qtyMatch =
-    body.match(/^(\d+)\s*[xX]\s*(.+)$/) ?? body.match(/^(\d{1,3})\s+(.+)$/);
+    body.match(/^(\d+)[xX]\s*(.+)$/) ??
+    body.match(/^(\d+)\s+[xX]\s+(.+)$/) ??
+    body.match(/^(\d{1,3})\s+(.+)$/);
   let quantity = 1;
   let namePart = body;
   if (qtyMatch) {
@@ -120,23 +135,60 @@ export function parseDecklist(text: string): ParsedDeck {
   const entries: ParsedLine[] = [];
   const errors: ParseError[] = [];
   let section: DeckSection = 'main';
+  /*
+   * How many cards the current explicit `Commander` section has taken.
+   *
+   * MTGO, Arena and several deck sites export a commander block terminated by
+   * a BLANK LINE rather than an explicit `Deck` header:
+   *
+   *     Commander
+   *     1 Xenagos, God of Revels
+   *                              <- blank
+   *     1 Sol Ring
+   *     ...
+   *
+   * Without this, section state never left `commander` and the whole
+   * remaining list was read as commanders — 99 commanders, one
+   * TOO_MANY_COMMANDERS error and ~60 spurious INVALID_COMMANDER errors.
+   *
+   * Scoped deliberately narrowly: only a `commander` section that has already
+   * captured at least one card is closed this way. A blank line is NOT
+   * globally equivalent to a `Deck` header, because decklists routinely carry
+   * incidental blank lines inside the mainboard, and closing an arbitrary
+   * section on one would change long-standing behaviour. Contiguous
+   * commanders before the blank line are preserved, so partner and background
+   * pairs still parse.
+   */
+  let commanderLinesTaken = 0;
 
   const lines = text.split('\n');
   for (const [index, rawLine] of lines.entries()) {
     const lineNumber = index + 1;
     const trimmed = rawLine.replace(/\r$/, '').trim();
 
+    if (trimmed === '') {
+      if (section === 'commander' && commanderLinesTaken > 0) {
+        section = 'main';
+        commanderLinesTaken = 0;
+      }
+      continue;
+    }
+
     // A header only counts when it carries no card of its own.
     const header = detectSectionHeader(trimmed);
     if (header) {
       section = header;
+      commanderLinesTaken = 0;
       continue;
     }
 
     const result = parseLine(rawLine, lineNumber, section);
     if (result === null) continue;
     if (isParseError(result)) errors.push(result);
-    else entries.push(result);
+    else {
+      entries.push(result);
+      if (result.section === 'commander') commanderLinesTaken += 1;
+    }
   }
 
   return { entries, errors };
