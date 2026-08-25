@@ -49,6 +49,44 @@ npm run typecheck
 An invalid deck is **not** an HTTP error: you get `200` with a populated
 `validation.issues[]` *and* the metrics, so the UI can show both.
 
+## Power dimensions (Phase 4B)
+
+Deterministic 0-100 scores over the Phase 4A evidence layer. Each is a pure
+standalone scorer with its own evaluator (`npm run eval:<name>`); none is
+attached to `DeckProfile`.
+
+**Implemented and frozen:**
+
+| Dimension | Question | Components |
+|---|---|---|
+| **Speed** | How soon can the deck execute? | development 40 / win speed 60 |
+| **Consistency** | How reliably can it access and reproduce its plan? | targeted access 30 / selection 20 / card flow 15 / redundancy 25 / commander access 10 |
+| **Interaction** | How effectively can it disrupt opponents? | availability 25 / efficiency 25 / coverage 15 / stack 15 / stax 10 / graveyard 5 / board reset 5 |
+| **Resilience** | How well does it continue after disruption? | recovery 35 / protection 25 / weakest-link redundancy 25 / commander backup 15 |
+
+**Investigated and deferred as independent dimensions:**
+
+| Candidate | Why deferred |
+|---|---|
+| Card Advantage (4B.5) | Could not be separated from `Consistency.cardFlow`; non-card resources route to Speed |
+| Efficiency (4B.6) | Evidence measures cost, and raw cost is largely archetype identity; leverage and quantitative cost reduction unavailable |
+| Win-Plan Quality (4B.7) | Non-timing win evidence reconstructs Speed (r=0.83); win-plan coverage absent for 3 of 9 real fixtures |
+
+**"Deferred as an independent dimension" does not mean the concept is absent
+from the system.** Card-flow evidence remains part of Consistency; mana
+efficiency is represented wherever the existing dimensions legitimately consume
+it; win-plan evidence remains part of Speed, where it is currently frozen.
+
+The conclusion of Phase 4B is that current deterministic evidence supports four
+sufficiently distinct, broadly applicable power dimensions — Speed, Consistency,
+Interaction, Resilience. Additional candidates were explicitly investigated and
+rejected rather than forced into the model.
+
+These four are **not** claimed to be theoretically exhaustive. They are the
+dimensions currently justified by the available deterministic evidence. Each
+deferral in `EVIDENCE-BACKLOG.md` carries the concrete conditions under which it
+should be revisited.
+
 ## Architecture
 
 Three layers, enforced by import direction:

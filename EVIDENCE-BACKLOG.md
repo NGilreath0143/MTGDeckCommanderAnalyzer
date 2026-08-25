@@ -382,3 +382,81 @@ and one deck's figure rests on n=2.
 represent archetype-relative plan cost and/or plan leverage, rather than raw
 mana cost alone.
 
+## 25. Real-corpus combo-quality coverage gap
+
+**Found by:** Phase 4B.7 (Win-Plan Quality audit)
+**Affects:** `knownCombos.ts` `ComboResult` / `WinRequirement`, fixture coverage
+
+`ComboResult` and `WinRequirement` provide unusually strong deterministic
+win-quality evidence, distinguishing `immediate_win`, `deterministic_win`,
+`infinite_mana`, `infinite_damage`, `infinite_etb`, `deck_loop` and
+`major_advantage`, and marking combos that need an `additional_outlet`. That is
+enough to separate a two-card deterministic kill from an infinite-mana loop
+with no way to convert it.
+
+However, **none of the nine real-deck fixtures contains a complete recognized
+combo** — every one reports `completeCombos = 0`. Combo-quality semantics are
+therefore validated primarily through synthetic fixtures and cannot, by
+themselves, justify a deck-level Win-Plan Quality dimension.
+
+Seam: either real fixtures containing curated combos, or a wider curated combo
+list. This is fixture/coverage work, not a classifier defect.
+
+## 26. Finisher / archetype alignment mismatches
+
+**Found by:** Phase 4B.7 (Win-Plan Quality audit)
+**Affects:** Phase 4A `alignedWinConditions` vs `PRIMARY_SUPPORT_TAGS`
+
+Two recognised finishers fail alignment against the archetype they most
+obviously serve:
+
+- **Aurelia, the Warleader** — a curated win condition in both Voltron
+  fixtures, but its tags (`attack_payoff`, `extra_combat`) do not overlap the
+  Voltron support vocabulary (`voltron`, `aura`), so it is reported UNALIGNED.
+- **Craterhoof Behemoth** — a curated win condition in tokens-aristocrats, but
+  `go_wide_payoff` is not in the Tokens vocabulary (`token_generation`,
+  `token_payoff`, `token_doubling`), so it too is UNALIGNED.
+
+These are **evidence-vocabulary mismatches**, not scoring defects. Deliberately
+not repaired: `PRIMARY_SUPPORT_TAGS` is load-bearing for win-condition
+alignment, Speed's `alignmentScore`, and strategy support counting, so editing
+it moves the frozen Speed dimension (demonstrated during the Phase 3A
+`graveyard_recursion` work).
+
+## 27. Phase 4B.7 Win-Plan Quality — investigated and deferred
+
+**Status:** INVESTIGATED AND DEFERRED, not unfinished.
+
+**Semantic target:** given that the deck assembles its plan, how decisively does
+that plan convert into a win, independently of Speed, Consistency and
+Resilience?
+
+**Reason for deferral.** Existing deterministic evidence supports combo
+decisiveness well, but does not support broad non-combo win-plan quality.
+
+A candidate built only from existing NON-TIMING win evidence — aligned
+finishers, complete combos, recognised win conditions — correlated **r = 0.83
+with Speed and r = 0.87 with Win Speed**, indicating substantial reconstruction
+of an already-frozen dimension.
+
+Coverage is also structurally inadequate. Three of nine real decks have no
+represented win plan at all (graveyard-recursion, spellslinger, superfriends),
+both Voltron fixtures are severely underrepresented, and complete-combo quality
+evidence fires on zero real fixtures (item 25).
+
+**Reopening conditions:**
+
+1. Planeswalker win representation for Superfriends.
+2. Incremental-damage closing-plan evidence for Spellslinger.
+3. Commander-damage lethality evidence for Voltron.
+4. Finisher-requirement / support-sufficiency evidence bridging recognised
+   finisher *existence* to actual closing *capability*.
+5. Resolution of archetype/finisher vocabulary mismatches such as
+   `go_wide_payoff` alignment for Tokens (item 26).
+
+**Architectural warning.** Reopening Win-Plan Quality may require reconsidering
+which win-quality concepts currently belong to Speed — particularly the aligned
+finisher bonus and combo-quality evidence, both of which Speed consumes today.
+Do not duplicate those rewards across dimensions without an explicit ownership
+decision about which dimension owns each concept.
+
