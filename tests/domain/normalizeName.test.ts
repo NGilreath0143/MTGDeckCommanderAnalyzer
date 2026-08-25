@@ -46,6 +46,17 @@ describe('frontFaceName', () => {
     expect(frontFaceName('Malakir Rebirth // Malakir Mire')).toBe('Malakir Rebirth');
   });
 
+  it('splits a single-slash separator, which some exporters emit', () => {
+    // Verified live: /cards/collection returns not_found for BOTH slash forms;
+    // only the bare front face resolves.
+    expect(frontFaceName('Sejiri Shelter / Sejiri Glacier')).toBe('Sejiri Shelter');
+    expect(frontFaceName('Brightclimb Pathway / Grimclimb Pathway')).toBe('Brightclimb Pathway');
+  });
+
+  it('leaves a slash with no surrounding whitespace alone', () => {
+    expect(frontFaceName('Question Mark/Ampersand')).toBe('Question Mark/Ampersand');
+  });
+
   it('leaves single-faced names alone', () => {
     expect(frontFaceName('Sol Ring')).toBe('Sol Ring');
   });

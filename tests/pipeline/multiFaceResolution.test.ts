@@ -76,6 +76,24 @@ function makeStrictScryfall(catalogue: ScryfallCard[]) {
       }
       return { found, notFound, requests: 1 } satisfies CollectionResult;
     },
+
+    /*
+     * The fallback path. These fakes model /cards/collection's stricter
+     * matching, so the fake `named` endpoint is deliberately no more
+     * permissive than the collection one — it exists so the client shape is
+     * satisfied and the fallback is exercised, not to invent extra hits.
+     */
+    async fetchNamed(name) {
+      requests += 1;
+      requestedNames.push(name);
+      const key = normalizeCardName(name);
+      const hit = catalogue.find((c) => {
+        const canonical = normalizeCardName(c.name);
+        const front = normalizeCardName(c.name.split('//')[0] ?? c.name);
+        return canonical === key || front === key;
+      });
+      return { card: hit ?? null, requests: 1 };
+    },
   };
   return { client, requestedNames, get requests() { return requests; } };
 }

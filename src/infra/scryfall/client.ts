@@ -32,8 +32,26 @@ export interface ScryfallClientOptions {
   sleep?: (ms: number) => Promise<void>;
 }
 
+export interface NamedResult {
+  card: ScryfallCard | null;
+  requests: number;
+}
+
 export interface ScryfallClient {
   fetchCollection(identifiers: ScryfallIdentifier[]): Promise<CollectionResult>;
+  /**
+   * Resolve ONE name via /cards/named.
+   *
+   * Exists because the two endpoints disagree: /cards/collection cannot match
+   * some names that /cards/named resolves happily. Verified live on
+   * "Aang's Shelter" (an Avatar: The Last Airbender alternate name for
+   * Teferi's Protection), which /cards/collection returns in not_found under
+   * every spelling while /cards/named returns the card.
+   *
+   * One request per name, so this is a LAST-RESORT fallback for the few names
+   * the batch endpoint rejected — never a bulk path.
+   */
+  fetchNamed(name: string): Promise<NamedResult>;
 }
 
 /** Split a list into fixed-size chunks. Pure; exported for testing. */
@@ -102,5 +120,24 @@ export function createScryfallClient(options: ScryfallClientOptions = {}): Scryf
     return { found, notFound, requests };
   }
 
-  return { fetchCollection };
+  async function fetchNamed(name: string): Promise<NamedResult> {
+    const url = `${baseUrl}/cards/named?exact=${encodeURIComponent(name)}`;
+    const response = await fetchImpl(url, {
+      method: 'GET',
+      headers: { Accept: 'application/json', 'User-Agent': userAgent },
+    });
+
+    // A genuine miss is a 404 and must not abort the whole import.
+    if (response.status === 404) return { card: null, requests: 1 };
+    if (!response.ok) {
+      throw new ScryfallError(
+        `Scryfall request failed with status ${response.status}`,
+        response.status,
+      );
+    }
+
+    return { card: (await response.json()) as ScryfallCard, requests: 1 };
+  }
+
+  return { fetchCollection, fetchNamed };
 }

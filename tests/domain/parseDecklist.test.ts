@@ -65,6 +65,23 @@ describe('parseLine set codes', () => {
     expect(asLine(parseLine('1 Sol Ring [LTC] *F*', 1, 'main')).name).toBe('Sol Ring');
   });
 
+  it('strips a foil marker that trails a parenthesised set and collector number', () => {
+    // The decoration sits AFTER the collector number in real exports, and the
+    // set-info pattern is anchored at end-of-string, so the foil marker has to
+    // come off first or the whole "(PLC) 26" stays glued to the name.
+    expect(asLine(parseLine('1 Mesa Enchantress (PLC) 26 *F*', 1, 'main'))).toMatchObject({
+      name: 'Mesa Enchantress',
+      setCode: 'PLC',
+    });
+  });
+
+  it('strips a foil marker with a promo collector suffix', () => {
+    expect(asLine(parseLine('1 Anguished Unmaking (PSOI) 242p *F*', 1, 'main'))).toMatchObject({
+      name: 'Anguished Unmaking',
+      setCode: 'PSOI',
+    });
+  });
+
   it('does not mistake a parenthesised name for a set code', () => {
     // No set code here; the whole thing is the name.
     expect(asLine(parseLine('1 Erase (Not the Urza Legacy One)', 1, 'main')).name).toBe(

@@ -35,15 +35,23 @@ function stripSetInfo(name: string): { name: string; setCode: string | null } {
   let working = name.trim();
   let setCode: string | null = null;
 
+  /*
+   * Trailing "*F*" foil markers and similar decorations come off FIRST.
+   *
+   * Exports put the decoration AFTER the collector number
+   * ("1 Mesa Enchantress (PLC) 26 *F*"), and the set-info pattern below is
+   * anchored at end-of-string. Stripping in the other order left the marker
+   * in place, the anchor failed, and the whole "(PLC) 26" stayed glued to the
+   * name — every foil line resolved as a miss.
+   */
+  working = working.replace(/\s*\*[^*]*\*\s*$/, '').trim();
+
   // Trailing collector number: "Sol Ring 123" only when a set code preceded it.
   const bracketed = working.match(/^(.*?)\s*[[(]([A-Za-z0-9_]{2,6})[\])]\s*(\S+)?\s*$/);
   if (bracketed?.[1] !== undefined && bracketed[1].trim()) {
     working = bracketed[1].trim();
     setCode = (bracketed[2] ?? '').toUpperCase() || null;
   }
-
-  // Trailing "*F*" foil markers and similar decorations.
-  working = working.replace(/\s*\*[^*]*\*\s*$/, '').trim();
 
   return { name: working, setCode };
 }

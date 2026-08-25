@@ -30,10 +30,27 @@ export function normalizeCardName(name: string): string {
     .replace(/\s+/g, ' ');
 }
 
-/** The front face of a multi-faced name ("A // B" -> "A"). */
+/**
+ * The front face of a multi-faced name ("A // B" -> "A").
+ *
+ * Accepts a SINGLE-slash separator too ("A / B"), which several exporters
+ * emit for DFCs and split cards. `/cards/collection` rejects both slash forms
+ * outright — verified live: "Sejiri Shelter / Sejiri Glacier" and
+ * "Brightclimb Pathway / Grimclimb Pathway" both come back in `not_found`,
+ * while the bare front face resolves — so the front face is the only spelling
+ * that reliably matches, and a single-slash list would otherwise lose every
+ * one of its multi-face cards.
+ *
+ * The slash must be surrounded by whitespace. A bare "/" is left alone
+ * because real card names contain one ("Fire // Ice" is always written with
+ * the doubled form, but "Question Mark / Ampersand"-style names must not be
+ * truncated at an internal slash).
+ */
 export function frontFaceName(name: string): string {
-  const idx = name.indexOf('//');
-  return idx === -1 ? name.trim() : name.slice(0, idx).trim();
+  const doubled = name.indexOf('//');
+  if (doubled !== -1) return name.slice(0, doubled).trim();
+  const single = name.match(/^(.*?)\s\/\s/);
+  return single?.[1] !== undefined ? single[1].trim() : name.trim();
 }
 
 /**

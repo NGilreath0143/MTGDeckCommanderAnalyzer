@@ -1,4 +1,8 @@
-import { nameLookupKeys, normalizeCardName } from '@/domain/normalizeName';
+import {
+  frontFaceName as domainFrontFaceName,
+  nameLookupKeys,
+  normalizeCardName,
+} from '@/domain/normalizeName';
 import type { ResolvedCard } from '@/domain/types';
 import type { CardRepo } from '@/infra/db/cardRepo';
 import { mapScryfallCard } from '@/infra/scryfall/mapScryfallCard';
@@ -12,6 +16,12 @@ import type { ScryfallIdentifier } from '@/infra/scryfall/types';
  * Scryfall, persists what comes back, and returns one map keyed by every
  * name a caller might reasonably use.
  */
+
+/**
+ * How many single-name /cards/named requests one import may issue.
+ * Bounds the cost of a decklist full of unresolvable lines.
+ */
+const NAMED_FALLBACK_LIMIT = 10;
 
 export interface ResolveCardsDeps {
   cardRepo: CardRepo;
@@ -32,10 +42,9 @@ export interface ResolveCardsResult {
  * second parser for multi-face names.
  */
 function frontFaceName(name: string): string | null {
-  const index = name.indexOf('//');
-  if (index < 0) return null;
-  const front = name.slice(0, index).trim();
-  return front === '' ? null : front;
+  const front = domainFrontFaceName(name);
+  if (front === '' || front === name.trim()) return null;
+  return front;
 }
 
 /** Index a card under its canonical name and, for DFCs, its front face. */
@@ -172,6 +181,34 @@ export async function resolveCards(
         // Alias the caller's original spelling onto the canonical card.
         if (card) byName.set(key, card);
       }
+    }
+
+    /*
+     * Last-resort /cards/named fallback.
+     *
+     * The two endpoints disagree: /cards/collection rejects some names that
+     * /cards/named resolves. Verified live on "Aang's Shelter" (an
+     * Avatar: The Last Airbender alternate name for Teferi's Protection),
+     * which /cards/collection returns in not_found under every spelling.
+     *
+     * One request per name, so it is bounded deliberately: only names that
+     * BOTH the batch request and the front-face retry failed to resolve, and
+     * at most NAMED_FALLBACK_LIMIT of them. A list full of typos therefore
+     * costs a handful of requests, not one per bad line.
+     */
+    const unresolvedAfterRetry = missingKeys.filter((key) => !byName.has(key));
+    for (const key of unresolvedAfterRetry.slice(0, NAMED_FALLBACK_LIMIT)) {
+      const requested = requestedByKey.get(key) ?? key;
+      const named = await deps.scryfall.fetchNamed(requested);
+      requests += named.requests;
+      if (!named.card) continue;
+
+      const [saved] = await deps.cardRepo.upsertMany([mapScryfallCard(named.card)]);
+      if (!saved) continue;
+      fetched += 1;
+      indexCard(byName, saved);
+      // Alias the caller's spelling onto the canonical card.
+      if (!byName.has(key)) byName.set(key, saved);
     }
   }
 

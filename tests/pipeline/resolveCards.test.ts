@@ -110,7 +110,13 @@ describe('resolveCards', () => {
     });
 
     expect(result.stats.requested).toBe(1);
-    expect(scryfall.requestedNames).toEqual(['Forest']);
+    /*
+     * "Forest" is not in this fixture catalogue (only "Snow-Covered Forest"),
+     * so it is a genuine miss: one batched /cards/collection request, then one
+     * /cards/named fallback. Both ask for the name exactly once — the point of
+     * the test is that three identical lines never become three lookups.
+     */
+    expect(scryfall.requestedNames).toEqual(['Forest', 'Forest']);
   });
 
   it('mixes cache hits and misses in one pass', async () => {
