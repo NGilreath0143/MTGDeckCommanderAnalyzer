@@ -1,0 +1,15 @@
+{
+ "id": "deck-88c1d6",
+ "commander": [
+  "Oloro, Ageless Ascetic"
+ ],
+ "source": "community",
+ "believedTier": "high_power",
+ "sourceReference": "player_supplied_real_deck \u2014 builder 1",
+ "decklistVersion": "2026-08-25",
+ "anchor": false,
+ "commanderCentric": "no",
+ "archetypeNotes": "Lifegain control into combo. Contains a complete Exquisite Blood + Sanguine Bond pair, plus Aetherflux Reservoir and Test of Endurance / Felidar Sovereign alt-wins. Dense prison and tax effects.",
+ "curatorRationale": "High-power non-cEDH. Supplies stax/control and a highly-interactive-but-slower-to-close shape. DUPLICATE COMMANDER with the incoherent-slot deck: retaining both is intentional, giving a same-commander / different-99 methodological contrast. Possible confound recorded: a rater may anchor the two against each other, or judge by commander reputation rather than construction. Deliberately NOT an anchor candidate for that reason.",
+ "licensingNote": "Privately supplied; decklist file gitignored."
+}

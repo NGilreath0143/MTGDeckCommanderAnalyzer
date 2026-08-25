@@ -1,0 +1,15 @@
+{
+ "id": "deck-ba213b",
+ "commander": [
+  "Lathril, Blade of the Elves"
+ ],
+ "source": "precon",
+ "believedTier": "precon",
+ "sourceReference": "taw/magic-preconstructed-decks-data decks_v2.json \u2014 \"Elven Empire\", set khc",
+ "decklistVersion": "2021-02-05",
+ "anchor": true,
+ "commanderCentric": "yes",
+ "archetypeNotes": "Elf tribal go-wide; Lathril drain payoff. Untouched precon.",
+ "curatorRationale": "Low anchor candidate. Untouched precon provides the unambiguous low end of the range and a construction baseline every rater can recognise as unmodified.",
+ "licensingNote": "Card names only, from a public machine-readable precon dataset."
+}

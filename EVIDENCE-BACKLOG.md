@@ -563,3 +563,38 @@ Implication for future ingestion work: synthetic fixtures validate the parser
 against formats we already thought of. Externally sourced lists are the only
 thing that tests it against formats we did not.
 
+## 31. Phase 5A.2 pilot corpus frozen
+
+**Status:** FROZEN. 12 decks, `corpusDigest`
+`949faeaddfa3068f17aaa38aefe2761ad66ba37c7cc459a72ac63b6ac28a96e2`.
+
+Tier mix: precon 2, casual 2, focused 1, optimized 2, high_power 2, cedh 2,
+incoherent 1. Provenance: 8 player-supplied (two builders), 2 precon, 2 cEDH
+database. Anchor candidates: Elven Empire (low), Amarant (middle), Meren
+(upper) — candidates only, demotable if rater disagreement is high.
+
+`verifyFrozenCorpus` gates `pilot:bundles` and fails CLOSED with no bypass
+flag: a check that can be skipped is no guarantee, and the urge to skip peaks
+exactly when something has drifted. The manifest is never regenerated
+automatically, since silently rewriting a digest on mismatch converts a
+detected corruption into an accepted one.
+
+Known limitations carried into the pilot:
+
+- **Decklists are outside Git.** `corpus/decks/` is gitignored (privately
+  supplied and licensed content), so the corpus is *verifiable* from the repo
+  but not independently *reconstructable*. Re-verification needs the local
+  files.
+- **Builder 1 supplies 6 of 12 decks (50%).** Improved from ~58% by adding a
+  second builder, but still the largest single source. A recognisable
+  deckbuilding fingerprint remains possible.
+- **Two decks share a commander** (Oloro). Retained deliberately as a
+  same-commander/different-99 contrast; neither is an anchor, because the
+  duplication makes them unsuitable as clean references. Whether raters anchor
+  on commander reputation is now an empirical question the pilot answers.
+- **Curator tiers are guesses, not labels.** `BelievedTier` exists to check
+  coverage and pick anchors. It must never be treated as ground truth, and the
+  blind labels are the only thing that can validate or refute it.
+- **`lands` and `tokens` archetypes are absent** from the pilot corpus; both
+  exist in the nine-deck fixture corpus.
+

@@ -1,0 +1,15 @@
+{
+ "id": "deck-76d537",
+ "commander": [
+  "Osgir, the Reconstructor"
+ ],
+ "source": "precon",
+ "believedTier": "precon",
+ "sourceReference": "taw/magic-preconstructed-decks-data decks_v2.json \u2014 \"Lorehold Legacies\", set c21",
+ "decklistVersion": "2021-04-23",
+ "anchor": false,
+ "commanderCentric": "yes",
+ "archetypeNotes": "Artifact recursion / graveyard value. Untouched precon.",
+ "curatorRationale": "Second precon from a different product family, so the precon tier is not represented by a single design philosophy.",
+ "licensingNote": "Card names only, from a public machine-readable precon dataset."
+}

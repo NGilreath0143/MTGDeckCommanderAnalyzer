@@ -1,0 +1,15 @@
+{
+ "id": "deck-e7e771",
+ "commander": [
+  "Ob Nixilis, Captive Kingpin"
+ ],
+ "source": "community",
+ "believedTier": "high_power",
+ "sourceReference": "player_supplied_real_deck \u2014 builder 1",
+ "decklistVersion": "2026-08-25",
+ "anchor": false,
+ "commanderCentric": "no",
+ "archetypeNotes": "Storm / ritual combo. Lowest curve (avg MV 2.34) and fewest lands (31) in the corpus; 5 tutors, 9 fast mana, 3 free spells. Underworld Breach / Grapeshot / Walking Ballista lines. Contains Tainted Pact without Thassa's Oracle (partial combo only).",
+ "curatorRationale": "High-power non-cEDH, unambiguous. Only storm deck and only commander-independent shell among the player decks. The corpus's only source of free interaction.",
+ "licensingNote": "Privately supplied; decklist file gitignored."
+}

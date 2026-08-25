@@ -1,0 +1,16 @@
+{
+ "id": "deck-e37bbe",
+ "commander": [
+  "Rograkh, Son of Rohgahh",
+  "Silas Renn, Seeker Adept"
+ ],
+ "source": "cedh_list",
+ "believedTier": "cedh",
+ "sourceReference": "KonradHoeffner/cedh gh-pages:data/decks.json \u2014 \"[Primer] cEDH Rog Grixis Turbo\"; upstream cEDH Decklist Database",
+ "decklistVersion": "2026-08-25",
+ "anchor": false,
+ "commanderCentric": "no",
+ "archetypeNotes": "Grixis turbo storm, partner pair.",
+ "curatorRationale": "Established cEDH. Rograkh and Silas both appear in current cedhstats.org tournament representation. Chosen to be a materially different competitive profile from Blue Farm.",
+ "licensingNote": "Card names only, from a public generated dataset derived from the cEDH Decklist Database."
+}

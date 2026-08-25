@@ -1,0 +1,70 @@
+{
+ "phase": "5A.2",
+ "artifact": "pilot calibration corpus freeze",
+ "frozenAt": "2026-08-25",
+ "deckCount": 12,
+ "note": "Per-file SHA-256 digests plus a corpus-level rollup. Re-running the manifest check after any decklist or metadata edit yields a different corpusDigest, which is what makes accidental modification detectable. Contains no model output and no tier/anchor information.",
+ "corpusDigest": "949faeaddfa3068f17aaa38aefe2761ad66ba37c7cc459a72ac63b6ac28a96e2",
+ "decks": [
+  {
+   "id": "deck-193331",
+   "decklistSha256": "7f4bd2fd0aa0b334b21e8f532028e8195c7d4120b46b1b7a8b073920af6594b9",
+   "metaSha256": "fae9cf44d380e4598e1f52e26b076d34976860d3323f8ec1351ae098f01f1a58"
+  },
+  {
+   "id": "deck-498e4d",
+   "decklistSha256": "07e308780563f6e4472050b9b2e5f33642e5f3f215d8ed49bc5256d3aa781c00",
+   "metaSha256": "5274cd44c85ac310e212e668c784a35e628cb9ac4703730595332f546e3ab366"
+  },
+  {
+   "id": "deck-54f072",
+   "decklistSha256": "0839405665328455854d3fc24e4d0f901820c5ad41fe72171e1c92161dbf2adc",
+   "metaSha256": "e03e3d9983d451e07e6cb4875723bb1d51feccc4c1e9c25399a26ce2a4b47289"
+  },
+  {
+   "id": "deck-67c1b6",
+   "decklistSha256": "0937d7a013f6d277950061ac9ab3b607d56813f36ac9cba27096f9ebe4a0151e",
+   "metaSha256": "ec74715b6fd92cb088708f1f03229ee7a57d9a0eadfed17f79d1a03b08b63e9d"
+  },
+  {
+   "id": "deck-76d537",
+   "decklistSha256": "c8a7520ab0cec44294077bc8c79a82d61b530f6af7a6232a15e10269ef165ab3",
+   "metaSha256": "dbdfa03b938d2a6adaedba7e210145c7f85986f2c24e737a98076858e9637628"
+  },
+  {
+   "id": "deck-88c1d6",
+   "decklistSha256": "5a1268d35399ef366270c1a661bbed9269102855d31bee8412d4c7aff7faebfa",
+   "metaSha256": "509764d0c0cbd425dfa0bc978e9280019222c5405db25145c9da29a467132afd"
+  },
+  {
+   "id": "deck-a773d5",
+   "decklistSha256": "de6aed06af1da6aad9b4378c087925bdf9ece85b23bc95313a38882a2fbfa4f5",
+   "metaSha256": "fd586c6a2bdaa3661237e7b691ace59e9032bee1deb89ece5f8abe79283c6d04"
+  },
+  {
+   "id": "deck-ba213b",
+   "decklistSha256": "37782f367a815afcad2bb098b1bdf94a50a5a02358504fe9eadf80552d5ea2af",
+   "metaSha256": "b9f5b983c77099043bb4cea0ff747ca4852aea5560e17cea8958e0b894e58b86"
+  },
+  {
+   "id": "deck-c88512",
+   "decklistSha256": "1ca25205527b4a58c5099de9dbafa1489163b3c901c15aec3a9171ffde3d0425",
+   "metaSha256": "e060050b74f02c2fb699f2e79f7d99f7a1655dc5a8f46dc77c1865eb8a276107"
+  },
+  {
+   "id": "deck-dc666d",
+   "decklistSha256": "c8a29be53d22175635249f7f5cd6a3dda3c110151d9385b64ecfbcc01a8f1b60",
+   "metaSha256": "071606c336cbe7b2f3981c45a813fd087e0df4f9dad184b6eda9e57a39549e46"
+  },
+  {
+   "id": "deck-e37bbe",
+   "decklistSha256": "c6e719293ef2290edbf770cb1370d101819e53e688b29694393968c293396d38",
+   "metaSha256": "90dbcb282fdd133ebe6a47c06a2091f6c0c6e9ea497a37e0bbaac9422b62693c"
+  },
+  {
+   "id": "deck-e7e771",
+   "decklistSha256": "b6270d881d0923d0e47cdb90177297153ec69eea7e008ed2216ae9cb590246cf",
+   "metaSha256": "2cb9ddbec1e86dca28a2c0d621e88dac103cb3eebacb31c243f0d8c71d413220"
+  }
+ ]
+}

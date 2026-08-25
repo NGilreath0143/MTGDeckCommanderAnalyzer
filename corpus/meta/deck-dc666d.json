@@ -1,0 +1,15 @@
+{
+ "id": "deck-dc666d",
+ "commander": [
+  "Xenagos, God of Revels"
+ ],
+ "source": "community",
+ "believedTier": "casual",
+ "sourceReference": "player_supplied_real_deck \u2014 builder 1",
+ "decklistVersion": "2026-08-25",
+ "anchor": false,
+ "commanderCentric": "yes",
+ "archetypeNotes": "Battlecruiser big-creature beatdown; fight/bite removal. Highest curve in the corpus (avg MV 4.31), 0 tutors, 1 fast mana.",
+ "curatorRationale": "Ordinary casual: high curve with no acceleration or search. Supplies battlecruiser and a high-ceiling/low-floor shape.",
+ "licensingNote": "Privately supplied; decklist file gitignored."
+}

@@ -15,6 +15,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildRaterBundle, pilotPairs } from '@/eval/pilot/pairs';
+import { describeFreezeFailure, verifyFrozenCorpus } from '@/eval/pilot/freeze';
 import { renderRaterBundle, type DeckForBundle } from '@/eval/pilot/bundle';
 import { checkPilotCoverage, PILOT_DECK_COUNT } from '@/eval/pilot/corpus';
 import type { DeckMeta } from '@/eval/pilot/types';
@@ -36,6 +37,21 @@ if (!existsSync(DECKS) || !existsSync(META)) {
   );
   process.exit(1);
 }
+
+/*
+ * Freeze integrity comes FIRST — before coverage, pair generation, rendering or
+ * writing. Bundles built from a drifted corpus would silently invalidate every
+ * label collected against them, and the drift would be undetectable afterwards.
+ *
+ * Fails closed with no bypass flag on purpose: a check that can be skipped is
+ * no guarantee, and the urge to skip it peaks exactly when something has moved.
+ */
+const freeze = verifyFrozenCorpus();
+if (!freeze.ok) {
+  console.error(describeFreezeFailure(freeze));
+  process.exit(1);
+}
+console.log(`freeze verified: corpusDigest ${freeze.corpusDigest?.slice(0, 16)}…`);
 
 const metas: DeckMeta[] = readdirSync(META)
   .filter((f) => f.endsWith('.json'))

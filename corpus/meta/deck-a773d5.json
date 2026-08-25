@@ -1,0 +1,15 @@
+{
+ "id": "deck-a773d5",
+ "commander": [
+  "Amarant Coral"
+ ],
+ "source": "community",
+ "believedTier": "casual",
+ "sourceReference": "player_supplied_real_deck \u2014 builder 1",
+ "decklistVersion": "2026-08-25",
+ "anchor": true,
+ "commanderCentric": "mixed",
+ "archetypeNotes": "Voltron aura/equipment; the most protection-dense deck in the corpus, with almost no recursion.",
+ "curatorRationale": "Middle anchor candidate. Ordinary casual edging focused: coherent plan, 0 tutors, 0 fast mana. Supplies Voltron and a protection-heavy / recovery-light shape.",
+ "licensingNote": "Privately supplied; decklist file gitignored."
+}

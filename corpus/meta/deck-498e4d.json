@@ -1,0 +1,15 @@
+{
+ "id": "deck-498e4d",
+ "commander": [
+  "Go-Shintai of Life's Origin"
+ ],
+ "source": "community",
+ "believedTier": "focused",
+ "sourceReference": "player_supplied_real_deck \u2014 builder 1",
+ "decklistVersion": "2026-08-25",
+ "anchor": false,
+ "commanderCentric": "yes",
+ "archetypeNotes": "Enchantress / shrines with enchantment recursion and pillow-fort. 1 tutor, 0 fast mana, 5 utility lands.",
+ "curatorRationale": "Focused casual: coherent and redundant on theme, but thin optimisation markers. Wins by grinding inevitability rather than a compact reliable plan. Supplies enchantress and a slow-but-resilient shape.",
+ "licensingNote": "Privately supplied; decklist file gitignored."
+}

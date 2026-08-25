@@ -1,0 +1,15 @@
+{
+ "id": "deck-67c1b6",
+ "commander": [
+  "Codie, Vociferous Codex"
+ ],
+ "source": "community",
+ "believedTier": "optimized",
+ "sourceReference": "player_supplied_real_deck \u2014 builder 1",
+ "decklistVersion": "2026-08-25",
+ "anchor": false,
+ "commanderCentric": "uncertain",
+ "archetypeNotes": "Gates + alternate-win, built spell-only outside its lands. Every nonland card is an instant or sorcery, so the deck conforms cleanly to Codie's \"you can't cast permanent spells\" restriction \u2014 the Gates are lands and are unaffected. 12 Gate-typed lands plus Maze's End give a compact alt-win; Approach of the Second Sun is a second. 10 cheap spells act as cascade fuel so Codie's exile-until-lesser-MV reliably hits.",
+ "curatorRationale": "Optimized casual on structural grounds rather than staple density (0 premium tutors, 0 fast mana): total commitment to a non-obvious commander restriction across all 93 slots, plus two independent compact win conditions. Retained partly as a rater-ambiguity probe \u2014 21 Gates and no creatures may be hard to place. NOTE: an earlier curator pass wrongly described this deck as having an internal construction tension between the commander and the Gates package; that reading was incorrect and is not carried forward.",
+ "licensingNote": "Privately supplied; decklist file gitignored."
+}

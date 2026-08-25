@@ -1,0 +1,15 @@
+{
+ "id": "deck-c88512",
+ "commander": [
+  "Meren of Clan Nel Toth"
+ ],
+ "source": "community",
+ "believedTier": "optimized",
+ "sourceReference": "player_supplied_real_deck \u2014 builder 2",
+ "decklistVersion": "2026-08-25",
+ "anchor": true,
+ "commanderCentric": "yes",
+ "archetypeNotes": "Golgari graveyard reanimator aristocrats. 10 recursion effects, 12 sacrifice outlets, 10 interaction pieces, 12 utility lands, Protean Hulk + Razaketh as a compact combo axis.",
+ "curatorRationale": "Upper anchor candidate. Optimized casual: the mana base, tutors (Razaketh, Fiend Artisan) and sac outlets are all chosen to serve one recursion loop rather than being generically dense. Second builder, which also reduces builder concentration. Supplies graveyard/reanimator and aristocrats.",
+ "licensingNote": "Privately supplied; decklist file gitignored."
+}

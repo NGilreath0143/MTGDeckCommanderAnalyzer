@@ -1,0 +1,15 @@
+{
+ "id": "deck-193331",
+ "commander": [
+  "Oloro, Ageless Ascetic"
+ ],
+ "source": "community",
+ "believedTier": "incoherent",
+ "sourceReference": "player_supplied_real_deck \u2014 builder 2",
+ "decklistVersion": "2026-08-25",
+ "anchor": false,
+ "commanderCentric": "no",
+ "archetypeNotes": "Chair/throne-reference theme deck. 9 cards reference thrones or seats with no mechanical relationship to one another; three vestigial sub-themes (8 vampires, 6 lifegain, 7 taxing effects) that do not combine; zero mana acceleration of any kind; no coherent closing plan.",
+ "curatorRationale": "Deliberately incoherent slot. Builder-supplied factual provenance: constructed as a joke deck with the goal that every card reference chairs in some way, with no regard for synergy. This is intentional construction provenance, NOT an accidental or failed attempt, and must not be described as one. It still satisfies the realism requirement: exactly 100 cards, legal, coherent BUW identity, 37 lands, avg MV 3.53. DUPLICATE COMMANDER with the high-power Oloro deck; see that record for the shared confound note.",
+ "licensingNote": "Privately supplied; decklist file gitignored."
+}

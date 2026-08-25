@@ -1,0 +1,16 @@
+{
+ "id": "deck-54f072",
+ "commander": [
+  "Kraum, Ludevic's Opus",
+  "Tymna the Weaver"
+ ],
+ "source": "cedh_list",
+ "believedTier": "cedh",
+ "sourceReference": "KonradHoeffner/cedh gh-pages:data/decks.json \u2014 \"Blue Farm [Primer]\"; upstream cEDH Decklist Database",
+ "decklistVersion": "2026-08-25",
+ "anchor": false,
+ "commanderCentric": "no",
+ "archetypeNotes": "Blue Farm midrange-control, partner pair. 25 lands, avg MV 1.79.",
+ "curatorRationale": "Established cEDH, deliberately a midrange-control profile rather than a second turbo shell, so the pilot cannot learn that cEDH means one deck shape. Kraum and Tymna both appear in current tournament representation.",
+ "licensingNote": "Card names only, from a public generated dataset derived from the cEDH Decklist Database."
+}
