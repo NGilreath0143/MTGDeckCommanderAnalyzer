@@ -43,3 +43,8 @@ next-env.d.ts
 
 # phase specification documents (kept locally, not part of the codebase)
 phase-*-claude-instructions.md
+
+# Phase 5A calibration pilot: decklists and rater worksheets are working data.
+# corpus/meta/ and corpus/analysis/ are committed; see README.
+corpus/decks/
+corpus/bundles/

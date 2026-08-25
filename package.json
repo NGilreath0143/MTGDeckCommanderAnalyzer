@@ -25,7 +25,9 @@
     "eval:consistency": "tsx scripts/eval-consistency.ts",
     "eval:interaction": "tsx scripts/eval-interaction.ts",
     "eval:resilience": "tsx scripts/eval-resilience.ts",
-    "eval:composite": "tsx scripts/eval-composite.ts"
+    "eval:composite": "tsx scripts/eval-composite.ts",
+    "pilot:bundles": "tsx scripts/pilot-bundles.ts",
+    "pilot:verify-blind": "tsx scripts/pilot-verify-blind.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
