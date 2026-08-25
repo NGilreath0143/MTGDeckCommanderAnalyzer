@@ -460,3 +460,39 @@ finisher bonus and combo-quality evidence, both of which Speed consumes today.
 Do not duplicate those rewards across dimensions without an explicit ownership
 decision about which dimension owns each concept.
 
+## 28. Cross-dimension scale calibration
+
+**Found by:** Phase 4C commensurability audit
+**Affects:** all four frozen dimension scales, and the Composite Power Index
+
+The four dimension scores are **not fully ratio-comparable**, so multiplying
+them (geometric mean) assumes a commensurability that has not been established.
+
+Measured from the frozen formulas: Speed's non-combo win-speed base is capped at
+`ARCHETYPE_BASE_MIN(10) + ARCHETYPE_BASE_RANGE(20) = 30` before bonuses, and the
+composite is then gated by `0.75 + 0.25 * dev/100`. A non-combo deck therefore
+**cannot exceed roughly 69 Speed** even with perfect development and every
+finisher and combat bonus, while Consistency, Interaction and Resilience are
+plain component sums any deck can fill toward 100. Only a curated complete combo
+lifts Speed into the 80-100 region, and no real fixture contains one (item 25).
+
+Consequences observed across the nine real decks: Speed's coefficient of
+variation is 9.2% against 14.6-18.6% for the others, and Speed carries the
+largest systematic negative log contribution to the composite (-1.30 summed,
+versus Consistency +1.21). It is not merely often the minimum — it genuinely
+drags hardest, because its ceiling is lower.
+
+**Revisit when a labelled corpus exists** spanning approximately: precon /
+low-power, upgraded casual, mid-power, high-power, optimised, cEDH.
+
+That calibration pass should determine whether:
+
+1. dimension outputs need monotonic calibration transforms;
+2. the four scales can be made commensurate;
+3. geometric aggregation remains appropriate after calibration;
+4. overall composite bands can be established.
+
+Until then the Composite Power Index is frozen as a provisional internal
+comparative index. This is a calibration gap, **not** a defect in the geometric
+mean, and must not be papered over with an unvalidated rescaling.
+

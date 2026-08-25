@@ -72,6 +72,43 @@ attached to `DeckProfile`.
 | Efficiency (4B.6) | Evidence measures cost, and raw cost is largely archetype identity; leverage and quantitative cost reduction unavailable |
 | Win-Plan Quality (4B.7) | Non-timing win evidence reconstructs Speed (r=0.83); win-plan coverage absent for 3 of 9 real fixtures |
 
+### Composite Power Index (Phase 4C)
+
+```
+Power Profile                       <- the primary interpretation
+  |- Speed
+  |- Consistency
+  |- Interaction
+  |- Resilience
+
+Composite Power Index               <- a compact summary of the profile
+  |- geometric mean of the four frozen dimensions
+```
+
+`assessCompositePower()` returns a `CompositePowerIndex`: the index `score`, the
+four `dimensions` it came from, `diagnostics` (weakest dimension, its score, and
+the arithmetic mean for comparison), and `limitations`.
+
+The geometric mean was chosen over the arithmetic mean semantically: arithmetic
+ranks a 80/80/80/10 profile *above* a balanced 60/60/60/60, which would assert
+that a near-absent capacity is fully purchasable with excess elsewhere. The
+geometric mean treats the dimensions as partially complementary instead, with no
+tuning constant. A true zero in any dimension yields zero, deliberately and
+without an epsilon.
+
+**It is an uncalibrated internal index, not an absolute power measurement.** A
+cross-dimension commensurability audit found the four scales are not fully
+ratio-comparable: Speed's attainable ceiling for non-combo decks is about 69,
+against roughly 100 for the other three, so equal numbers do not mark equal
+positions and the index under-weights Speed strength. Rankings are indicative
+rather than settled — several real fixtures sit within ~1.5 points and reorder
+under modest hypothetical recalibration of any single dimension.
+
+Accordingly it emits **no** rating band, no 1-10 mapping, and no
+casual/high-power/cEDH label; the individual-dimension bands are deliberately
+not reused. `EVIDENCE-BACKLOG.md` records the labelled-corpus calibration work
+that would be needed before any of that becomes trustworthy.
+
 **"Deferred as an independent dimension" does not mean the concept is absent
 from the system.** Card-flow evidence remains part of Consistency; mana
 efficiency is represented wherever the existing dimensions legitimately consume

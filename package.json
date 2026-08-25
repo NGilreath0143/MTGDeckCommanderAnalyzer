@@ -24,7 +24,8 @@
     "eval:speed": "tsx scripts/eval-speed.ts",
     "eval:consistency": "tsx scripts/eval-consistency.ts",
     "eval:interaction": "tsx scripts/eval-interaction.ts",
-    "eval:resilience": "tsx scripts/eval-resilience.ts"
+    "eval:resilience": "tsx scripts/eval-resilience.ts",
+    "eval:composite": "tsx scripts/eval-composite.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
