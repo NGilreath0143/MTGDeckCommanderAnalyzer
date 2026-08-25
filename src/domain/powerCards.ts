@@ -337,6 +337,72 @@ function isInteractionCard(text: CardText): boolean {
 const RECURRING_TRIGGER = /\b(?:whenever|at the beginning of)\b/i;
 /** A repeatable activated ability (cost followed by a colon). */
 const REPEATABLE_ACTIVATED = /(?:^|\n)[^:\n]{0,40}(?:\{[^}\n]+\}|Pay \d+ life)[^:\n]{0,30}:/m;
+/** Acquiring cards: drawing, or the impulse shape the draw rule also accepts. */
+const ACQUIRES_CARDS = /\bdraw\b|\bexile the top card of your library\b/i;
+
+/*
+ * --- repeatable-advantage guards ---------------------------------------
+ *
+ * All three operate on ONE ability line, never the whole card. A guard applied
+ * globally would suppress a legitimate engine because of unrelated text
+ * elsewhere: Sphinx's Tutelage loots on one line while triggering on another.
+ */
+
+/**
+ * The activation cost consumes the source, so the ability resolves once. Mind
+ * Stone, Relic of Progenitus and the Spellbomb/Cluestone families all read
+ * "{cost}, Sacrifice this artifact: Draw a card" and are one-shot replacement,
+ * not engines.
+ */
+const SELF_CONSUMING_ACTIVATION =
+  /^[^:\n]{0,60}\b(?:Sacrifice|Exile)\s+(?:this|~)\b[^:\n]{0,40}:/i;
+
+/**
+ * Loot/rummage parity: the clause draws and discards in equal measure, so the
+ * card delta is zero. This is card flow, which Consistency measures elsewhere,
+ * not net advantage. A strictly positive delta ("draw three, then discard
+ * one") still qualifies.
+ */
+const LOOT_PARITY =
+  /\bdraws?\s+(a|one|two|three|four|five|\d+)\s+cards?,?\s+then\s+discards?\s+(a|one|two|three|four|five|\d+)\s+cards?\b/i;
+
+/**
+ * A symmetric clause that hands every player the same draw is not controller
+ * advantage. The subject must be the one DRAWING: a possessive timing phrase
+ * does not count, which is what keeps Wavebreak Hippocamp ("during each
+ * opponent's turn ... draw a card") credited as the asymmetric engine it is.
+ */
+const SYMMETRIC_DRAW =
+  /\beach (?:player|opponent)\b(?!'s)[^.]{0,60}?\bdraws?\b|\bthat player draws\b/i;
+
+const WORD_COUNTS: Record<string, number> = {
+  a: 1, one: 1, two: 2, three: 3, four: 4, five: 5,
+};
+const cardCount = (token: string): number =>
+  WORD_COUNTS[token.toLowerCase()] ?? Number.parseInt(token, 10);
+
+/**
+ * Does this one ability line provide REPEATED card acquisition for its
+ * controller? Returns false for single-use activations, parity looting, and
+ * symmetric draws.
+ */
+function isRepeatableAdvantageLine(line: string): boolean {
+  const triggered = RECURRING_TRIGGER.test(line);
+  const activated = REPEATABLE_ACTIVATED.test(`\n${line}`);
+  if (!triggered && !activated) return false;
+  if (!ACQUIRES_CARDS.test(line)) return false;
+
+  // A triggered ability is never paid for by consuming the source.
+  if (activated && !triggered && SELF_CONSUMING_ACTIVATION.test(line)) return false;
+
+  const parity = line.match(LOOT_PARITY);
+  if (parity && cardCount(parity[1] ?? '') <= cardCount(parity[2] ?? '')) return false;
+
+  // "you draw" marks the controller as a beneficiary even in a shared clause.
+  if (SYMMETRIC_DRAW.test(line) && !/\byou draw\b/i.test(line)) return false;
+
+  return true;
+}
 
 // ---------------------------------------------------------------------------
 // Rules
@@ -420,10 +486,23 @@ const POWER_RULES: PowerRule[] = [
     matches: (card, text) => {
       const front = frontFace(card.typeLine);
       if (/\b(?:Instant|Sorcery)\b/i.test(front)) return false;
-      if (!/\bdraw\b/i.test(text.front) && !/\bexile the top card of your library\b/i.test(text.front)) {
+      if (!ACQUIRES_CARDS.test(text.front)) return false;
+      if (!RECURRING_TRIGGER.test(text.front) && !REPEATABLE_ACTIVATED.test(text.front)) {
         return false;
       }
-      return RECURRING_TRIGGER.test(text.front) || REPEATABLE_ACTIVATED.test(text.front);
+
+      /*
+       * Judge each ability line separately. When no single line both repeats
+       * and acquires — the ability is split across lines, or phrased in a way
+       * the line split cannot see — fall back to the card-level answer rather
+       * than silently dropping the card.
+       */
+      const lines = text.front.split('\n').filter((l) => l.trim());
+      const candidates = lines.filter(
+        (l) => (RECURRING_TRIGGER.test(l) || REPEATABLE_ACTIVATED.test(`\n${l}`)) && ACQUIRES_CARDS.test(l),
+      );
+      if (candidates.length === 0) return true;
+      return candidates.some(isRepeatableAdvantageLine);
     },
   },
 

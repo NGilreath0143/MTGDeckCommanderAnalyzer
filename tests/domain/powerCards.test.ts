@@ -235,3 +235,119 @@ describe('provenance and shape', () => {
     expect(Object.keys(CURATED_SET_SIZES).length).toBeGreaterThan(0);
   });
 });
+
+describe('repeatable_card_advantage precision guards', () => {
+  /*
+   * Three demonstrated false-positive families. All guards are CLAUSE-LOCAL:
+   * a card is judged per ability line, so unrelated text elsewhere never
+   * suppresses a legitimate engine.
+   */
+  const isRepeatable = (card: Parameters<typeof cardHasPower>[0]) =>
+    cardHasPower(card, 'repeatable_card_advantage');
+
+  const artifact = (name: string, oracleText: string) =>
+    makeCard({ name, typeLine: 'Artifact', cmc: 2, manaCost: '{2}', oracleText });
+  const creature = (name: string, oracleText: string) =>
+    makeCard({ name, typeLine: 'Creature — Human', cmc: 3, manaCost: '{2}{U}', oracleText });
+
+  describe('self-consuming activations', () => {
+    it('rejects an activation that sacrifices its own source', () => {
+      expect(isRepeatable(artifact('Probe', '{T}: Add {C}.\n{1}, {T}, Sacrifice this artifact: Draw a card.')))
+        .toBe(false);
+    });
+
+    it('rejects an activation that exiles its own source', () => {
+      expect(isRepeatable(artifact('Probe', '{1}, Exile this artifact: Draw a card.'))).toBe(false);
+    });
+
+    it('accepts a persistent activated draw that keeps its source', () => {
+      expect(isRepeatable(artifact('Probe', '{2}, {T}: Draw a card.'))).toBe(true);
+    });
+
+    it('accepts a recurring triggered draw', () => {
+      expect(isRepeatable(creature('Probe', 'At the beginning of your upkeep, draw a card.'))).toBe(true);
+    });
+
+    it('keeps an engine whose OTHER ability is self-consuming', () => {
+      // The sacrifice line does not draw, so it cannot suppress the engine.
+      expect(isRepeatable(artifact('Probe',
+        'At the beginning of your upkeep, draw a card.\n{T}, Sacrifice this artifact: Add {C}{C}.')))
+        .toBe(true);
+    });
+  });
+
+  describe('loot / parity', () => {
+    it('rejects repeatable draw-then-discard parity', () => {
+      expect(isRepeatable(artifact('Probe', '{2}, {T}: Draw a card, then discard a card.'))).toBe(false);
+    });
+
+    it('rejects parity at higher counts', () => {
+      expect(isRepeatable(artifact('Probe', '{T}: Draw two cards, then discard two cards.'))).toBe(false);
+    });
+
+    it('accepts a strictly positive delta', () => {
+      expect(isRepeatable(artifact('Probe', '{T}: Draw three cards, then discard one card.'))).toBe(true);
+    });
+
+    it('does not let unrelated discard text elsewhere kill a real engine', () => {
+      /*
+       * The clause-local contract: this card loots on one line and draws
+       * unconditionally on another. A global discard guard would wrongly
+       * reject it.
+       */
+      expect(isRepeatable(creature('Probe',
+        'Whenever you cast a spell, draw a card.\n{2}, {T}: Draw a card, then discard a card.')))
+        .toBe(true);
+    });
+  });
+
+  describe('symmetric draw', () => {
+    it('rejects a repeatable draw shared by every player', () => {
+      expect(isRepeatable(creature('Probe',
+        "At the beginning of each player's draw step, that player draws an additional card.")))
+        .toBe(false);
+    });
+
+    it('rejects a symmetric wheel trigger', () => {
+      expect(isRepeatable(creature('Probe',
+        'Whenever this creature deals combat damage to a player, each player discards their hand, then draws seven cards.')))
+        .toBe(false);
+    });
+
+    it('keeps an asymmetric opponent-triggered engine', () => {
+      expect(isRepeatable(creature('Probe',
+        'Whenever an opponent draws a card, you may draw two cards.')))
+        .toBe(true);
+    });
+
+    it('treats a possessive timing phrase as asymmetric, not shared', () => {
+      // "during each opponent's turn" says WHEN, not who draws.
+      expect(isRepeatable(creature('Probe',
+        "Whenever you cast your first spell during each opponent's turn, draw a card.")))
+        .toBe(true);
+    });
+  });
+
+  describe('named regressions', () => {
+    it.each(['Mind Stone', 'Relic of Progenitus', 'Soul-Guide Lantern'])(
+      '%s is no longer a repeatable engine', (name) =>
+        expect(isRepeatable(realCard(name))).toBe(false));
+
+    it.each([
+      'Rhystic Study', 'Mystic Remora', 'The One Ring', 'Phyrexian Arena',
+      'Skullclamp', 'Sylvan Library', 'Esper Sentinel', 'Beast Whisperer',
+      'Guardian Project', 'Consecrated Sphinx', 'Necropotence',
+    ])('%s remains a repeatable engine', (name) =>
+      expect(isRepeatable(realCard(name))).toBe(true));
+
+    it('keeps Nihil Spellbomb: its draw is triggered, not a self-consuming activation', () => {
+      /*
+       * "When this artifact is put into a graveyard from the battlefield, you
+       * may pay {B}. If you do, draw a card." The sacrifice is on a DIFFERENT
+       * ability; the draw itself is a recurring trigger. The general rule
+       * classifies it accordingly, and no name-based exception overrides that.
+       */
+      expect(isRepeatable(realCard('Nihil Spellbomb'))).toBe(true);
+    });
+  });
+});

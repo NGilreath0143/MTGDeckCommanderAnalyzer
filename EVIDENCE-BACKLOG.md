@@ -212,3 +212,173 @@ sharing a tag may not actually replace what the commander does.
 Removing the command-zone floor limited the consequence — the ambiguity now
 costs 0 points rather than inflating both cases by 6 — but the distinction
 remains underivable.
+
+## 16. Positive non-draw card acquisition is unrecognised
+
+**Found by:** Phase 4B.5 investigation
+**Affects:** Phase 2 `card_advantage` role
+
+`Necropotence` reads "Pay 1 life: Exile the top card of your library face down.
+Put that card into your hand..." — it never uses the word "draw", so no
+`card_advantage` rule matches. It is one of the strongest card-advantage
+engines in the format.
+
+Fixing this requires a general rule for library-or-exile-to-hand acquisition,
+carefully separated from selection and from impulse access. Deliberately out of
+scope for the 4B.2.1 precision pass, which removes demonstrated false positives
+rather than expanding recognition.
+
+## 17. "Target player draws" subject semantics
+
+**Found by:** Phase 4B.5 investigation
+**Affects:** Phase 2 `yourMaxDraw`
+
+`Sign in Blood` reads "Target player draws two cards and loses 2 life". The
+subject guard correctly rejects a named non-you drawer, so the card gets no
+`card_advantage` role even though you are almost always the target.
+
+A repair would need to distinguish "target player" used as a self-targeting
+convenience from genuinely symmetric or opponent-directed draw. Not attempted.
+
+## 18. `efficient_card_advantage` conflates three properties
+
+**Found by:** Phase 4B.5 investigation
+**Affects:** Phase 4A `powerCards.ts` curated list (14 cards)
+
+The list mixes mana efficiency (Night's Whisper, Sign in Blood, Painful
+Truths), repeatability (Rhystic Study, Mystic Remora, Esper Sentinel) and raw
+magnitude (Ad Nauseam, Necropotence). It also silently compensates for items 16
+and 17: Necropotence and Sign in Blood are curated as efficient card advantage
+while carrying no `card_advantage` role at all.
+
+Cleaning it up means first fixing the two false negatives, then deciding which
+single property "efficient" should name. Frozen for now.
+
+## 19. Phase 4B.5 Resource Advantage — investigated and deferred
+
+**Status:** CLOSED, not unfinished.
+
+A full evidence investigation concluded that Resource Advantage cannot measure
+anything independent of `Consistency.cardFlow` with available evidence:
+
+- every candidate magnitude signal derives from `yourMaxDraw`, which the
+  `card_advantage` role already thresholds and cardFlow already consumes;
+- non-card resources have no separate home — Treasure generation is classified
+  as `ramp` and routes to Speed, where it scores 0 on all nine real decks;
+- extra land drops, permanent copying and commander resource engines have no
+  deterministic evidence at all.
+
+The genuine findings of that investigation were *corrections to Consistency's
+inputs* (this backlog's items 16-18 and the 4B.2.1 precision repair), not the
+basis for a fifth dimension. Reopening it would require new upstream vocabulary
+for non-card resources, not a scoring pass.
+
+## 20. One-shot self-replacing card-flow evidence
+
+**Found by:** Phase 4B.2.1 (Card Advantage precision repair)
+**Affects:** Phase 2 `card_advantage` role → Consistency `cardFlow`
+
+The `repeatable_card_advantage` precision repair correctly removes
+self-consuming draw permanents such as Mind Stone and the Spellbomb family from
+repeatable engine evidence.
+
+However, these cards may still provide legitimate one-shot card flow by
+replacing themselves. The current `card_advantage` role does not represent this
+semantic family, so cards such as Mind Stone can fall from repeatable credit to
+**zero** cardFlow credit rather than to a lower one-shot tier.
+
+Do not restore `repeatable_card_advantage` credit to compensate.
+
+Future investigation should determine whether self-replacing/cantrip effects
+require a distinct one-shot card-flow signal. Such a pass would need to
+separate four semantic families the current model collapses into two:
+
+- **repeatable card advantage** — Rhystic Study, Phyrexian Arena
+- **one-shot card advantage** — Divination, Harmonize (net positive, once)
+- **card replacement / cantripping** — Mind Stone, Spellbombs, Ponder
+  (replaces itself, no net gain)
+- **card selection** — Brainstorm, Sensei's Divining Top (changes which cards,
+  not how many)
+
+Today only the first and last have their own signal.
+
+## 21. No deterministic per-archetype primary-support cost baseline
+
+**Found by:** Phase 4B.6 (Efficiency audit)
+**Affects:** any cost-based metric over `PRIMARY_SUPPORT_TAGS`
+
+Measured corpus-wide, the average mana value of each archetype's support pool
+spans **1.16 MV**: voltron 2.63, aura_voltron 2.66, enchantress 2.68 at one end;
+tokens 3.67, go_wide 3.72, reanimator 3.76, spellslinger 3.78 at the other.
+
+Across the nine real fixtures the total observed spread in support cost is only
+1.51 MV, so **most of it is archetype identity rather than deck quality**. An
+absolute "cheap is efficient" threshold would systematically reward Voltron and
+Enchantress and penalise Spellslinger and Reanimator regardless of how well any
+individual deck is built.
+
+Normalising against a per-archetype baseline reorders the nine decks almost
+completely — graveyard-recursion moves from 2nd-cheapest to best, and
+voltron-equipment from mid-field to worst. That baseline does not exist in the
+codebase; it was computed ad hoc from the bulk corpus during the audit.
+
+Seam: a derived cost constant per `PRIMARY_SUPPORT_TAGS` entry, or an
+archetype-relative normaliser in Phase 3C. Fourteen hand-entered constants from
+a single sweep would not be defensible.
+
+## 22. Cost reduction is not quantitatively joined to card cost
+
+**Found by:** Phase 4B.6 (Efficiency audit)
+**Affects:** Phase 3A `spell_cost_reduction` tag, Phase 4A curve evidence
+
+`Mizzix of the Izmagnus` carries `spell_cost_reduction`, but nothing anywhere
+quantifies **how much** it reduces, or joins that reduction to the mana values
+of the cards it discounts. A deck whose commander halves its effective curve is
+indistinguishable from one that merely mentions cost reduction.
+
+This is why the "cost-reduction commander" case is unmeasurable: the evidence
+establishes that reduction exists, never its magnitude.
+
+Seam: a Phase 4A evidence field pairing a reduction amount with the card class
+it applies to.
+
+## 23. No deterministic leverage or impact evidence
+
+**Found by:** Phase 4B.6 (Efficiency audit)
+**Affects:** all of Phase 2/3A/4A
+
+`Rhystic Study` and `Divination` are both mana value 3 and both carry the
+`card_advantage` role. Nothing distinguishes the game impact of one from the
+other. The same holds for a 6-mana engine that wins the game against a 6-mana
+value creature.
+
+This is the hard blocker for Efficiency generally: without impact evidence,
+"progress purchased per resource spent" collapses into "cost", and cost alone is
+archetype identity (item 21). It also limits any future Threat/Win-Plan work
+that would need to separate a credible closer from a merely powerful card.
+
+Seam: an impact/leverage classifier, which is a substantially larger modelling
+question than a tag or curated list.
+
+## 24. Phase 4B.6 Efficiency — investigated and deferred
+
+**Status:** INVESTIGATED AND DEFERRED, not unfinished.
+
+Existing evidence can measure **cost**, but cannot reliably measure
+**primary-plan progress purchased per resource spent**.
+
+Raw cost is strongly archetype-dependent (item 21), while the two signals that
+would separate efficiency from cheapness — leverage/impact (item 23) and
+quantitative cost reduction (item 22) — are not currently available. All four
+`efficient_*` properties are curated name lists rather than rules, so combining
+them yields a "cheap goodstuff" score already consumed by three frozen
+dimensions.
+
+The one genuinely novel join available — card `cmc` against primary-support
+tags — discriminates across only a 0.49 MV band for seven of nine real decks,
+and one deck's figure rests on n=2.
+
+**Reopening condition:** revisit Efficiency only when deterministic evidence can
+represent archetype-relative plan cost and/or plan leverage, rather than raw
+mana cost alone.
+
